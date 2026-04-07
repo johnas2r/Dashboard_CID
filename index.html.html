@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CID Virtual · Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F2F0EB; --surface:#FFFFFF; --surface2:#F7F5F0;
+  --border:#E2DDD4; --border2:#D0C9BE;
+  --text:#1C1B18; --text2:#6B6560; --text3:#A09A93;
+  --accent:#0078D4; --accent-l:#EBF4FC;
+  --green:#1A9968; --green-l:#E6F5EE;
+  --amber:#C47A0A; --amber-l:#FEF3DC;
+  --red:#C43B2A; --red-l:#FDECEA;
+  --purple:#5B3FD9; --purple-l:#EEE9FD;
+  --teal:#0D7A6B; --teal-l:#E3F4F1;
+  --coral:#C4441E; --coral-l:#FDEEE8;
+  --gray:#787068; --gray-l:#EEE9E3;
+  --radius:10px; --radius-lg:14px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --font:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+  --tr:all .18s cubic-bezier(.4,0,.2,1);
+}
+[data-theme=dark] {
+  --bg:#141412; --surface:#1E1D1A; --surface2:#262420;
+  --border:#2E2C28; --border2:#3A3830;
+  --text:#F0EDE6; --text2:#9A9389; --text3:#5C574F;
+  --accent:#4DA3E8; --accent-l:#0D2030;
+  --green:#2EBB82; --green-l:#0F2419;
+  --amber:#E09020; --amber-l:#271A06;
+  --red:#E05040; --red-l:#271009;
+  --purple:#8B6FF5; --purple-l:#1E1535;
+  --teal:#22C4A8; --teal-l:#082420;
+  --coral:#E06040; --coral-l:#271208;
+  --gray:#9A9389; --gray-l:#1E1D1A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* HEADER */
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.hdr-logo{width:32px;height:32px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0;letter-spacing:-.5px}
+.hdr-info{flex:1;min-width:0}
+.hdr-title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hdr-sub{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:1px;display:flex;align-items:center;gap:6px}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);display:inline-block;flex-shrink:0}
+.sync-dot.ok{background:var(--green)}
+.sync-dot.syncing{background:var(--amber);animation:pulse 1s infinite}
+.sync-dot.error{background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hdr-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.btn-icon{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:5px;font-family:var(--font);transition:var(--tr);white-space:nowrap}
+.btn-icon:hover{background:var(--border);color:var(--text)}
+.btn-icon.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-icon.primary:hover{opacity:.9}
+
+/* CONFIG BANNER */
+.config-banner{background:var(--amber-l);border:1px solid var(--amber);border-radius:var(--radius);padding:.875rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:flex-start;gap:12px}
+.config-banner.hidden{display:none}
+.cb-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.cb-body{flex:1}
+.cb-title{font-size:13px;font-weight:600;color:var(--amber);margin-bottom:4px}
+.cb-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:8px}
+.cb-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.cb-field input{width:100%;padding:6px 10px;border:1px solid var(--border2);border-radius:7px;font-size:12px;font-family:var(--mono);background:var(--surface);color:var(--text);outline:none}
+.cb-field input:focus{border-color:var(--accent)}
+.cb-field label{display:block;font-size:10px;color:var(--text2);margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
+
+/* BODY */
+.body{padding:1.25rem 1.5rem;max-width:1480px;margin:0 auto}
+
+/* METRICS */
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:1.25rem}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem 1rem;cursor:pointer;transition:var(--tr)}
+.metric:hover{border-color:var(--border2)}
+.m-val{font-size:22px;font-weight:600;line-height:1;letter-spacing:-.5px}
+.m-lbl{font-size:10px;color:var(--text2);margin-top:5px;letter-spacing:.3px;text-transform:uppercase}
+.m-trend{font-size:10px;color:var(--text3);margin-top:3px;font-family:var(--mono)}
+
+/* CHARTS */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem}
+.card-title{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.875rem}
+.team-row{display:flex;align-items:center;gap:10px;margin-bottom:.6rem}
+.team-name{font-size:12px;color:var(--text);width:90px;flex-shrink:0}
+.team-bar-wrap{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.team-bar{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.team-stat{font-size:11px;color:var(--text2);font-family:var(--mono);width:60px;text-align:right;flex-shrink:0}
+.donut-wrap{display:flex;align-items:center;gap:1.25rem}
+.legend-item{display:flex;align-items:center;gap:7px;margin-bottom:.5rem}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.legend-text{font-size:12px;color:var(--text)}
+.legend-pct{font-size:11px;color:var(--text2);font-family:var(--mono);margin-left:auto}
+
+/* CONTROLS */
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:.75rem}
+.search-wrap{position:relative;flex:1;min-width:180px}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+.search{width:100%;padding:7px 12px 7px 32px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);font-family:var(--font);outline:none;transition:var(--tr)}
+.search:focus{border-color:var(--accent)}
+select.fil{padding:7px 10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text);font-family:var(--font);cursor:pointer;outline:none}
+.view-tabs{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:2px;gap:2px}
+.view-tab{padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;color:var(--text2);transition:var(--tr);border:none;background:none;font-family:var(--font)}
+.view-tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+
+/* STATUS TABS */
+.stabs{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+.stab{padding:5px 12px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);transition:var(--tr);font-family:var(--font)}
+.stab:hover{border-color:var(--border2);color:var(--text)}
+.stab.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.stab-n{font-family:var(--mono);font-size:10px;opacity:.65;margin-left:3px}
+
+/* TABLE */
+.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{background:var(--surface2);padding:9px 12px;text-align:left;font-weight:500;color:var(--text2);font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{color:var(--text)}
+tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover,tbody tr.open{background:var(--surface2)}
+td{padding:9px 12px;vertical-align:middle}
+.td-name{font-weight:500;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* PIPELINE ROW */
+.pipe-row{display:none}
+.pipe-row.open{display:table-row}
+.pipe-row td{padding:0 12px 10px 38px}
+.pipe-inner{background:var(--bg);border-radius:8px;padding:10px 14px;border:1px solid var(--border)}
+.pipe-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;font-family:var(--mono)}
+.wf-steps{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.wf-step{display:flex;align-items:center;gap:3px}
+.wf-node{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:500;white-space:nowrap}
+.wf-node.done{background:var(--green-l);color:var(--green)}
+.wf-node.active{background:var(--accent-l);color:var(--accent)}
+.wf-node.pending{background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+.wf-node.corrections{background:var(--amber-l);color:var(--amber)}
+.wf-node.paused{background:var(--gray-l);color:var(--gray)}
+.wf-arrow{color:var(--border2);font-size:12px}
+
+/* KANBAN */
+.kanban{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.kol{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.kol-hdr{padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.kol-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:7px}
+.kol-n{font-family:var(--mono);font-size:11px;color:var(--text2);background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:1px 7px}
+.kol-body{padding:.75rem;display:flex;flex-direction:column;gap:6px;min-height:60px}
+.k-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.75rem;cursor:pointer;transition:var(--tr)}
+.k-card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
+.k-name{font-size:12px;font-weight:500;margin-bottom:6px;line-height:1.35}
+.k-prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:8px}
+.k-prog-fill{height:100%;border-radius:2px}
+.k-prog-lbl{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:3px}
+
+/* CARDS */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.p-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;cursor:pointer;transition:var(--tr);position:relative;overflow:hidden}
+.p-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}
+.p-card.s-term::before{background:var(--green)}
+.p-card.s-pau::before{background:var(--amber)}
+.p-card.s-sin::before{background:var(--border2)}
+.p-card.s-corr::before{background:var(--red)}
+.p-card:hover{border-color:var(--border2);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.pc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:.5rem}
+.pc-name{font-size:13px;font-weight:600;line-height:1.35;flex:1}
+.pc-meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.75rem}
+.pc-prog-bar{height:5px;background:var(--surface2);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.pc-prog-fill{height:100%;border-radius:3px}
+.pc-steps{display:flex;gap:3px;margin-top:7px}
+.pc-step{height:4px;flex:1;border-radius:2px}
+.pc-step.done{background:var(--green)}
+.pc-step.active{background:var(--accent)}
+.pc-step.pending{background:var(--border)}
+.pc-step.paused{background:var(--amber)}
+.pc-step.corrections{background:var(--red)}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:500;white-space:nowrap}
+.b-prog{background:var(--accent-l);color:var(--accent)}
+.b-term{background:var(--green-l);color:var(--green)}
+.b-sin{background:var(--gray-l);color:var(--gray)}
+.b-pau{background:var(--amber-l);color:var(--amber)}
+.b-corr{background:var(--red-l);color:var(--red)}
+.b-ph{background:var(--red-l);color:var(--red)}
+.b-pm{background:var(--amber-l);color:var(--amber)}
+.b-pl{background:var(--teal-l);color:var(--teal)}
+.b-mb{background:var(--purple-l);color:var(--purple)}
+.b-crea{background:var(--accent-l);color:var(--accent)}
+.b-leai{background:var(--teal-l);color:var(--teal)}
+.b-jo{background:var(--coral-l);color:var(--coral)}
+.b-fr{background:var(--amber-l);color:var(--amber)}
+.b-multi{background:var(--gray-l);color:var(--gray)}
+
+/* PROGRESS */
+.prog-inline{display:flex;align-items:center;gap:8px}
+.prog-bar-sm{width:60px;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;flex-shrink:0}
+.prog-fill{height:100%;border-radius:3px}
+.prog-pct{font-size:10px;color:var(--text2);font-family:var(--mono)}
+
+/* AVATAR */
+.av{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0}
+
+/* EXP BTN */
+.exp-btn{width:20px;height:20px;border-radius:5px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:var(--text2);transition:var(--tr);flex-shrink:0}
+.exp-btn:hover{background:var(--border)}
+.exp-btn.open{background:var(--accent-l);color:var(--accent);border-color:var(--accent);transform:rotate(90deg)}
+
+/* PAGER */
+.pager{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;font-size:11px;color:var(--text2);border-top:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.pg-btns{display:flex;gap:3px}
+.pg-btn{padding:3px 8px;border:1px solid var(--border);border-radius:6px;font-size:11px;cursor:pointer;background:var(--surface);color:var(--text2);font-family:var(--font);transition:var(--tr)}
+.pg-btn:hover:not(:disabled){background:var(--surface2)}
+.pg-btn.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.pg-btn:disabled{opacity:.35;cursor:default}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-bg.open{display:flex;animation:fadeIn .15s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border-radius:var(--radius-lg);border:1px solid var(--border);padding:1.5rem;width:min(540px,94vw);max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-md);animation:slideUp .2s cubic-bezier(.4,0,.2,1)}
+@keyframes slideUp{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:1.25rem}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:10px;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;font-weight:500}
+.fg input,.fg select,.fg textarea{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font);color:var(--text);background:var(--surface2);outline:none;transition:var(--tr)}
+.fg input:focus,.fg select:focus{border-color:var(--accent);background:var(--surface)}
+.fg-hint{font-size:10px;color:var(--text3);margin-top:3px;font-family:var(--mono)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border)}
+.btn-ghost{background:transparent;border:1px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;color:var(--text2);font-family:var(--font);transition:var(--tr)}
+.btn-ghost:hover{background:var(--surface2)}
+.btn-danger{background:var(--red-l);border:1px solid transparent;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;color:var(--red);font-family:var(--font);transition:var(--tr)}
+.btn-danger:hover{opacity:.8}
+.btn-save{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-family:var(--font);font-weight:500;transition:var(--tr)}
+.btn-save:hover{opacity:.9}
+
+/* REPORT MODAL */
+.report-preview{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:12px;line-height:1.7;max-height:300px;overflow-y:auto;font-family:var(--mono);color:var(--text2);white-space:pre-wrap}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:var(--bg);border-radius:10px;padding:.75rem 1.25rem;font-size:13px;font-weight:500;z-index:999;box-shadow:var(--shadow-md);transform:translateY(60px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:3rem;gap:10px;color:var(--text2);font-size:13px}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.empty-state{text-align:center;padding:3rem;color:var(--text3);font-size:13px}
+
+@media(max-width:700px){
+  .body{padding:.75rem}
+  .charts-row{grid-template-columns:1fr}
+  .hdr{padding:.6rem 1rem}
+  .frow{grid-template-columns:1fr}
+  .cb-fields{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">CID</div>
+  <div class="hdr-info">
+    <div class="hdr-title">Coordinación de Innovación y Desarrollo Virtual</div>
+    <div class="hdr-sub">
+      <span class="sync-dot" id="sync-dot"></span>
+      <span id="hdr-sub">Iniciando...</span>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <button class="btn-icon" onclick="syncNow()" id="sync-btn" title="Sincronizar con SharePoint">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      Sincronizar
+    </button>
+    <button class="btn-icon" onclick="openConfigBanner()" title="Configurar conexión SharePoint">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Conexión
+    </button>
+    <button class="btn-icon" onclick="openReport()" title="Generar reporte">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Reporte
+    </button>
+    <button class="btn-icon" onclick="exportCSV()">↓ CSV</button>
+    <button class="btn-icon" onclick="toggleTheme()" id="theme-btn">🌙</button>
+    <input type="file" id="csv-file" accept=".csv" style="display:none" onchange="importCSV(event)">
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- CONFIG BANNER -->
+  <div class="config-banner" id="config-banner">
+    <div class="cb-icon">⚙️</div>
+    <div class="cb-body">
+      <div class="cb-title">Conectar con SharePoint</div>
+      <div class="cb-desc">Ingresa la URL de tu sitio SharePoint y haz clic en <strong>Iniciar sesión</strong>. Se abrirá la ventana de Microsoft para autenticarte con tu cuenta de trabajo — sin necesidad de Tenant ID ni Client ID.</div>
+      <div class="cb-fields" style="grid-template-columns:1fr 1fr">
+        <div class="cb-field"><label>URL del sitio SharePoint</label><input type="text" id="cfg-site" placeholder="https://empresa.sharepoint.com/sites/cid"></div>
+        <div class="cb-field"><label>Nombre de la lista</label><input type="text" id="cfg-listname" placeholder="ProyectosCID"></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="btn-save" style="font-size:12px;padding:6px 14px" onclick="saveConfig()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          Iniciar sesión con Microsoft
+        </button>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 14px" onclick="dismissConfig()">Usar sin SharePoint</button>
+        <span style="font-size:11px;color:var(--text3);margin-left:4px">o importar datos manualmente →</span>
+        <button class="btn-icon" style="font-size:11px" onclick="document.getElementById('csv-file').click()">↑ Importar CSV</button>
+      </div>
+      <div id="cfg-status" style="font-size:11px;color:var(--text3);margin-top:8px;font-family:var(--mono);min-height:16px"></div>
+    </div>
+  </div>
+
+  <div class="metrics-grid" id="metrics"></div>
+  <div class="charts-row" id="charts"></div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search" type="text" id="search" placeholder="Buscar proyecto o responsable... ( / )" oninput="applyFilters()">
+    </div>
+    <select class="fil" id="fil-equipo" onchange="applyFilters()">
+      <option value="">Todos los equipos</option>
+      <option>Mi-Books</option><option>CREA</option><option>Diseño</option>
+      <option>Johnas</option><option>Freelance</option>
+    </select>
+    <select class="fil" id="fil-prio" onchange="applyFilters()">
+      <option value="">Toda prioridad</option>
+      <option value="High">Alta</option><option value="Medium">Media</option><option value="Low">Baja</option>
+    </select>
+    <select class="fil" id="fil-tipo" onchange="applyFilters()">
+      <option value="">Todos los tipos</option>
+      <option value="Proyecto">Proyectos</option>
+      <option value="Otros">Otros productos</option>
+    </select>
+    <select class="fil" id="fil-sort" onchange="applyFilters()">
+      <option value="">Orden original</option>
+      <option value="avance-desc">Mayor avance</option>
+      <option value="avance-asc">Menor avance</option>
+      <option value="nombre">Nombre A–Z</option>
+      <option value="fecha">Fecha límite</option>
+    </select>
+    <button class="btn-icon primary" onclick="openModal()">+ Nuevo proyecto</button>
+    <div class="view-tabs">
+      <button class="view-tab active" onclick="setView('table',this)">≡ Tabla</button>
+      <button class="view-tab" onclick="setView('kanban',this)">⊞ Kanban</button>
+      <button class="view-tab" onclick="setView('cards',this)">⊟ Cards</button>
+    </div>
+  </div>
+
+  <div class="stabs" id="stabs"></div>
+  <div id="view-area"></div>
+
+</div>
+
+<!-- PROJECT MODAL -->
+<div class="modal-bg" id="modal-bg">
+<div class="modal">
+  <div class="modal-title" id="modal-title">Nuevo proyecto</div>
+  <div class="fg"><label>Nombre del proyecto *</label><input type="text" id="f-nombre"></div>
+  <div class="frow">
+    <div class="fg"><label>Estado</label>
+      <select id="f-estado"><option>En progreso</option><option>Sin Iniciar</option><option>Terminado</option><option>Pausado</option><option>En correcciones</option></select>
+    </div>
+    <div class="fg"><label>Prioridad</label>
+      <select id="f-prio"><option value="High">Alta</option><option value="Medium">Media</option><option value="Low">Baja</option><option value="">Sin definir</option></select>
+    </div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Equipo</label>
+      <select id="f-equipo-m"><option>Mi-Books</option><option>CREA</option><option>Diseño</option><option>Johnas</option><option>Freelance</option><option value="">Sin equipo</option></select>
+    </div>
+    <div class="fg"><label>Responsable(s)</label><input type="text" id="f-resp" placeholder="Ej: Nancy Vargas"></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Avance (%)</label><input type="number" id="f-prog" min="0" max="100" value="0"></div>
+    <div class="fg"><label>Fecha límite</label><input type="date" id="f-fecha"></div>
+  </div>
+  <div class="fg"><label>Tipo</label>
+      <select id="f-tipo"><option value="Proyecto">Proyecto</option><option value="Otros">Otros (producto/recurso)</option></select>
+    </div>
+    <div class="fg">
+    <label>Fases del proyecto</label>
+    <input type="text" id="f-subtasks" placeholder="Diseño, Edición [En progreso], Revisión, Publicación">
+    <div class="fg-hint">Separar con coma · Agrega [Estado] para marcar: Terminado, En progreso, Pausado</div>
+  </div>
+  <div class="modal-foot" id="modal-foot"></div>
+</div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="modal-bg" id="report-bg">
+<div class="modal" style="max-width:600px">
+  <div class="modal-title">📊 Reporte de avance</div>
+  <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+    <button class="btn-ghost" style="font-size:12px;padding:6px 12px" onclick="genReport('ejecutivo')">Resumen ejecutivo</button>
+    <button class="btn-ghost" style="font-size:12px;padding:6px 12px" onclick="genReport('equipo')">Por equipo</button>
+    <button class="btn-ghost" style="font-size:12px;padding:6px 12px" onclick="genReport('atrasados')">Proyectos atrasados</button>
+    <button class="btn-ghost" style="font-size:12px;padding:6px 12px" onclick="genReport('completo')">Completo</button>
+  </div>
+  <div class="report-preview" id="report-text">Selecciona un tipo de reporte arriba...</div>
+  <div class="modal-foot">
+    <button class="btn-ghost" onclick="closeReport()">Cerrar</button>
+    <button class="btn-save" onclick="copyReport()">Copiar texto</button>
+    <button class="btn-save" onclick="exportReportTxt()">↓ Descargar .txt</button>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── EMBEDDED DATA (tus proyectos reales de Notion) ──────
+const NOTION_DATA = [{"id": 1, "nombre": "Naturaleza movimiento materia y transformación", "estado": "En progreso", "prioridad": "Low", "equipo": "Mi-Books", "responsable": "Claudia Puentes, Valentina Reina", "avance": 50, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Terminado"}, {"name": "Edición y C. E.", "estado": "Terminado"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 2, "nombre": "Custodia de los Datos", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 3, "nombre": "Diseño de Ambientes STEM", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 4, "nombre": "Medios de Control de la Actuación Administrativa I", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 5, "nombre": "Introducción a los Negocios Internacionales", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}]}, {"id": 6, "nombre": "Gestion Integral de Ciudades y Territorios", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 7, "nombre": "Fonética y fonología anglófona", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 8, "nombre": "Energia y materia en sistemas vivos", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 9, "nombre": "Gestión de Calidad en Salud", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 10, "nombre": "Control de Calidad, Atestiguamiento y Servicios Relacionados", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 11, "nombre": "Seguridad y Salud en el Trabajo", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 12, "nombre": "Hermeneutica juridica y tributaria", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 13, "nombre": "Epistemología Contable", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Mi-Books", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "Sin Iniciar"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 14, "nombre": "Necesidades Educativas Diversas e Inclusión", "estado": "En progreso", "prioridad": "Low", "equipo": "Mi-Books", "responsable": "Angie Leiton, Valentina Reina", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "En progreso"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 15, "nombre": "Taller financiero BI", "estado": "En progreso", "prioridad": "Low", "equipo": "Mi-Books", "responsable": "Claudia Puentes, Diana Ruiz", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "Sin Iniciar"}, {"name": "Edición y C. E.", "estado": "En progreso"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 16, "nombre": "Didáctica y evaluación del aprendizaje", "estado": "En progreso", "prioridad": "Low", "equipo": "Mi-Books", "responsable": "Angie Leiton, Diana Ruiz", "avance": 25, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Diseño", "estado": "En progreso"}, {"name": "Edición y C. E.", "estado": "Terminado"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 17, "nombre": "Simulador Análisis de Riesgos", "estado": "En progreso", "prioridad": "Low", "equipo": "Diseño, Johnas", "responsable": "John Rodríguez, Nancy Vargas", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": []}, {"id": 18, "nombre": "Juego - Matemáticas Financieras (1)", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Diseño", "responsable": "Nancy Vargas", "avance": 75, "fechaInicio": "", "fechaFin": "02/11/2026", "tipo": "Proyecto", "subtasks": []}, {"id": 19, "nombre": "360° - Desarrollo Sostenible", "estado": "Pausado", "prioridad": "Medium", "equipo": "Diseño", "responsable": "Leonardo Stiglich", "avance": 0, "fechaInicio": "", "fechaFin": "03/20/2026", "tipo": "Proyecto", "subtasks": [{"name": "Actividad 3", "estado": "Pausado"}, {"name": "Actividad 4", "estado": "Sin Iniciar"}, {"name": "Actividad 6", "estado": "Sin Iniciar"}, {"name": "Actividad 7", "estado": "Sin Iniciar"}, {"name": "Ajuste Recorrido", "estado": "Sin Iniciar"}]}, {"id": 20, "nombre": "CDA21 - Autocuidado", "estado": "Terminado", "prioridad": "Medium", "equipo": "CREA, Freelance", "responsable": "Valentina Reina", "avance": 100, "fechaInicio": "", "fechaFin": "02/11/2026", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 21, "nombre": "CDA03 - Bibliometría", "estado": "Terminado", "prioridad": "Medium", "equipo": "CREA, Freelance", "responsable": "Nancy Vargas", "avance": 100, "fechaInicio": "02/11/2026", "fechaFin": "02/11/2026", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 22, "nombre": "Cuadro Integral de Mando - Tutorial", "estado": "Terminado", "prioridad": "", "equipo": "Diseño", "responsable": "Nancy Vargas", "avance": 100, "fechaInicio": "", "fechaFin": "02/18/2026", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 23, "nombre": "Aplicativo creación de plantillas para Módulos", "estado": "Terminado", "prioridad": "High", "equipo": "Diseño", "responsable": "Leonardo Stiglich", "avance": 100, "fechaInicio": "", "fechaFin": "02/18/2026", "tipo": "Proyecto", "subtasks": []}, {"id": 24, "nombre": "LEAI - ECPA Digital", "estado": "Terminado", "prioridad": "Low", "equipo": "Diseño", "responsable": "Nancy Vargas", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": []}, {"id": 25, "nombre": "CDA -MOOC - Pensamiento Computacional", "estado": "Terminado", "prioridad": "Low", "equipo": "CREA, Freelance", "responsable": "Angie Leiton, Mónica Cely", "avance": 100, "fechaInicio": "", "fechaFin": "", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 26, "nombre": "Laboratorio de  juego infantil", "estado": "Pausado", "prioridad": "Medium", "equipo": "Diseño", "responsable": "Leonardo Stiglich", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": []}, {"id": 27, "nombre": "LEAI - Desarrollo Socioemocional", "estado": "En progreso", "prioridad": "", "equipo": "Johnas", "responsable": "John Rodríguez", "avance": 50, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Runión Inicial", "estado": "Terminado"}, {"name": "Diseño Pedagógico", "estado": "En progreso"}]}, {"id": 28, "nombre": "MOOC - Metodologías experimentales en la investigación-creación", "estado": "Sin Iniciar", "prioridad": "", "equipo": "Freelance", "responsable": "", "avance": 25, "fechaInicio": "", "fechaFin": "", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "Sin Iniciar"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Sin Iniciar"}, {"name": "Publicado", "estado": "Sin Iniciar"}]}, {"id": 29, "nombre": "Monopolio - Desafio Financiero", "estado": "En correcciones", "prioridad": "Medium", "equipo": "Diseño", "responsable": "Jennyfer Peña", "avance": 25, "fechaInicio": "02/17/2026", "fechaFin": "03/04/2026", "tipo": "Proyecto", "subtasks": [{"name": "Enviado a Revisión", "estado": "Sin Iniciar"}, {"name": "En correcciones", "estado": "En progreso"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Sin Iniciar"}]}, {"id": 30, "nombre": "CDA18- Inglés", "estado": "Terminado", "prioridad": "", "equipo": "CREA, Freelance", "responsable": "John Rodríguez", "avance": 100, "fechaInicio": "", "fechaFin": "02/04/2026", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 31, "nombre": "Psicología Educativa - Tutorial", "estado": "Terminado", "prioridad": "", "equipo": "Diseño", "responsable": "Nancy Vargas", "avance": 100, "fechaInicio": "", "fechaFin": "02/18/2026", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 32, "nombre": "Simulador Riesgo Ergonómico o Biomecánico - Guía Metodológica", "estado": "Terminado", "prioridad": "", "equipo": "Diseño", "responsable": "Nancy Vargas", "avance": 100, "fechaInicio": "", "fechaFin": "02/18/2026", "tipo": "Proyecto", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 33, "nombre": "Cuentos para Seguritos 3", "estado": "En progreso", "prioridad": "", "equipo": "Johnas", "responsable": "John Rodríguez", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Edición", "estado": "En progreso"}, {"name": "Grabación de Audios John", "estado": "En progreso"}, {"name": "Grabación otras voces", "estado": "En progreso"}, {"name": "Entrega", "estado": "En progreso"}, {"name": "Publicación", "estado": "En progreso"}, {"name": "Links SoundCLoud", "estado": "En progreso"}]}, {"id": 34, "nombre": "Desafío Financiero 360° - Juego", "estado": "Terminado", "prioridad": "", "equipo": "CREA", "responsable": "Nancy Vargas", "avance": 100, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 35, "nombre": "360° - Alcaldía Municipal", "estado": "En progreso", "prioridad": "", "equipo": "Diseño, Johnas", "responsable": "John Rodríguez, Leonardo Stiglich", "avance": 12, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Reunión Inicial", "estado": "Terminado"}, {"name": "Planeación", "estado": "En progreso"}, {"name": "Levantamiento de Material", "estado": "En progreso"}, {"name": "Edición", "estado": "En progreso"}, {"name": "Entrega Inicial", "estado": "En progreso"}, {"name": "Ajustes", "estado": "En progreso"}, {"name": "Entrega Final", "estado": "En progreso"}, {"name": "Publicación", "estado": "En progreso"}]}, {"id": 36, "nombre": "LEAI - Bitácoras Digitales", "estado": "En progreso", "prioridad": "", "equipo": "Diseño, Johnas", "responsable": "John Rodríguez", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": []}, {"id": 37, "nombre": "Energía Vital", "estado": "En progreso", "prioridad": "", "equipo": "CREA, Diseño, Johnas", "responsable": "John Rodríguez", "avance": 12, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Reunión Inicial", "estado": "Terminado"}, {"name": "Planeación", "estado": "En progreso"}, {"name": "Construcción de guión", "estado": "En progreso"}, {"name": "Edición", "estado": "En progreso"}, {"name": "Entrega Inicial", "estado": "En progreso"}, {"name": "Ajustes", "estado": "En progreso"}, {"name": "Entrega Final", "estado": "En progreso"}, {"name": "Publicación", "estado": "En progreso"}]}, {"id": 38, "nombre": "Juego - Simplex", "estado": "Pausado", "prioridad": "", "equipo": "CREA", "responsable": "Jennyfer Peña", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": []}, {"id": 39, "nombre": "Estilos de Pensamiento", "estado": "En progreso", "prioridad": "", "equipo": "CREA, Diseño, Johnas", "responsable": "John Rodríguez", "avance": 12, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Reunión Inicial", "estado": "Terminado"}, {"name": "Planeación", "estado": "En progreso"}, {"name": "Construcción de guión", "estado": "En progreso"}, {"name": "Edición", "estado": "En progreso"}, {"name": "Entrega Inicial", "estado": "En progreso"}, {"name": "Ajustes", "estado": "En progreso"}, {"name": "Entrega Final", "estado": "En progreso"}, {"name": "Publicación", "estado": "En progreso"}]}, {"id": 40, "nombre": "CDA - Frances", "estado": "En progreso", "prioridad": "", "equipo": "CREA", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Otros", "subtasks": [{"name": "Reunión Inicial", "estado": "Sin Iniciar"}, {"name": "Planeación", "estado": "En progreso"}, {"name": "Construcción de guión", "estado": "En progreso"}, {"name": "Edición", "estado": "En progreso"}, {"name": "Entrega Inicial", "estado": "En progreso"}, {"name": "Ajustes", "estado": "En progreso"}, {"name": "Entrega Final", "estado": "En progreso"}, {"name": "Publicación", "estado": "En progreso"}]}, {"id": 41, "nombre": "LEAI - Odisea de los 4 Reinos", "estado": "En progreso", "prioridad": "", "equipo": "CREA, Diseño, Johnas", "responsable": "John Rodríguez", "avance": 12, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": [{"name": "Reunión Inicial", "estado": "Terminado"}, {"name": "Planeación", "estado": "En progreso"}, {"name": "Construcción de guión", "estado": "En progreso"}, {"name": "Edición", "estado": "En progreso"}, {"name": "Entrega Inicial", "estado": "En progreso"}, {"name": "Ajustes", "estado": "En progreso"}, {"name": "Entrega Final", "estado": "En progreso"}, {"name": "Publicación", "estado": "En progreso"}]}, {"id": 42, "nombre": "CDA19 - Empleabilidad", "estado": "Terminado", "prioridad": "Medium", "equipo": "CREA, Freelance", "responsable": "Mónica Cely", "avance": 100, "fechaInicio": "", "fechaFin": "03/02/2026", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "Terminado"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "Terminado"}, {"name": "Publicado", "estado": "Terminado"}]}, {"id": 43, "nombre": "Design Thinking - Tutorial /video", "estado": "En progreso", "prioridad": "", "equipo": "Diseño", "responsable": "Nancy Vargas", "avance": 25, "fechaInicio": "", "fechaFin": "", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "En progreso"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "En progreso"}, {"name": "Publicado", "estado": "En progreso"}]}, {"id": 44, "nombre": "Psicología Comunitaria - Tutorial /video", "estado": "Terminado", "prioridad": "", "equipo": "Diseño", "responsable": "Nancy Vargas", "avance": 25, "fechaInicio": "", "fechaFin": "", "tipo": "Otros", "subtasks": [{"name": "Enviado a Revisión", "estado": "En progreso"}, {"name": "Asignado", "estado": "Terminado"}, {"name": "Entregado", "estado": "En progreso"}, {"name": "Publicado", "estado": "En progreso"}]}, {"id": 45, "nombre": "Entrega de guías y elementos", "estado": "Terminado", "prioridad": "", "equipo": "", "responsable": "", "avance": 0, "fechaInicio": "", "fechaFin": "", "tipo": "Proyecto", "subtasks": []}];
+
+// ─── STATE ───────────────────────────────────────────────
+const SK='cid_v5', CFG_KEY='cid_cfg';
+let projects=[], cfg={site:'',listname:'ProyectosCID'}, msalApp=null, spToken=null, spTokenExp=0;
+let currentTab='todos', currentPage=1, currentView='table', editingId=null;
+const expandedIds=new Set();
+const PAGE=15;
+
+// ─── MSAL CONFIG ─────────────────────────────────────────
+// Client ID público de Microsoft para apps de primera parte (no requiere registro en Azure)
+const MSAL_CLIENT_ID = '57336123-6e14-4acc-8dcf-5bde56e3e9ad'; // Microsoft Office public client
+
+async function getMsalApp(){
+  if(msalApp) return msalApp;
+  // Cargar MSAL desde CDN si no está disponible
+  if(!window.msal){
+    await new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js';
+      s.onload=res; s.onerror=rej;
+      document.head.appendChild(s);
+    });
+  }
+  const tenantId = cfg.tenantId || 'organizations'; // 'organizations' permite cualquier tenant corporativo
+  msalApp = new msal.PublicClientApplication({
+    auth:{
+      clientId: MSAL_CLIENT_ID,
+      authority: `https://login.microsoftonline.com/${tenantId}`,
+      redirectUri: window.location.href.split('?')[0].split('#')[0],
+    },
+    cache:{ cacheLocation:'sessionStorage' }
+  });
+  await msalApp.initialize();
+  return msalApp;
+}
+
+async function getSpToken(){
+  if(spToken && Date.now() < spTokenExp - 60000) return spToken;
+  try{
+    const app = await getMsalApp();
+    const accounts = app.getAllAccounts();
+    const req = { scopes:['https://graph.microsoft.com/Sites.ReadWrite.All'] };
+    let resp;
+    if(accounts.length > 0){
+      try{ resp = await app.acquireTokenSilent({...req, account:accounts[0]}); }
+      catch(e){ resp = await app.acquireTokenPopup(req); }
+    } else {
+      resp = await app.acquireTokenPopup(req);
+    }
+    spToken = resp.accessToken;
+    spTokenExp = Date.now() + (resp.expiresOn ? (resp.expiresOn - Date.now()) : 3600000);
+    return spToken;
+  }catch(e){
+    console.error('Auth error:', e);
+    return null;
+  }
+}
+
+// ─── INIT ────────────────────────────────────────────────
+async function init(){
+  initTheme();
+  try{
+    const rc=await window.storage.get(CFG_KEY);
+    if(rc){ cfg={...cfg,...JSON.parse(rc.value)}; applyConfig(); }
+  }catch(e){}
+  try{
+    const r=await window.storage.get(SK);
+    projects=r?JSON.parse(r.value):JSON.parse(JSON.stringify(NOTION_DATA));
+  }catch(e){projects=JSON.parse(JSON.stringify(NOTION_DATA));}
+  checkConfigBanner();
+  render();
+  setSyncStatus('ok','Listo · datos locales');
+}
+
+function checkConfigBanner(){
+  const banner=document.getElementById('config-banner');
+  if(cfg.site) banner.classList.add('hidden');
+}
+
+async function persist(){
+  try{await window.storage.set(SK,JSON.stringify(projects));}catch(e){}
+}
+
+// ─── SHAREPOINT AUTH (MSAL implicit) ────────────────────
+function applyConfig(){
+  document.getElementById('cfg-site').value=cfg.site||'';
+  document.getElementById('cfg-listname').value=cfg.listname||'ProyectosCID';
+}
+
+function openConfigBanner(){
+  applyConfig();
+  document.getElementById('config-banner').classList.remove('hidden');
+  document.getElementById('config-banner').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+async function saveConfig(){
+  const site = document.getElementById('cfg-site').value.trim();
+  const listname = document.getElementById('cfg-listname').value.trim() || 'ProyectosCID';
+  if(!site){ toast('⚠ Ingresa la URL del sitio SharePoint'); return; }
+  cfg = { site, listname };
+  try{ await window.storage.set(CFG_KEY, JSON.stringify(cfg)); }catch(e){}
+  const statusEl = document.getElementById('cfg-status');
+  statusEl.textContent = 'Abriendo ventana de inicio de sesión de Microsoft...';
+  try{
+    const token = await getSpToken();
+    if(token){
+      document.getElementById('config-banner').classList.add('hidden');
+      statusEl.textContent = '';
+      toast('✓ Sesión iniciada · sincronizando...');
+      syncNow();
+    } else {
+      statusEl.textContent = '⚠ No se pudo iniciar sesión. Intenta de nuevo.';
+    }
+  }catch(e){
+    statusEl.textContent = '⚠ Error al autenticar: ' + (e.message||'intenta de nuevo');
+  }
+}
+
+function dismissConfig(){
+  document.getElementById('config-banner').classList.add('hidden');
+  toast('Usando modo local. Puedes importar CSV cuando quieras.');
+}
+
+async function getSpToken(){
+  if(spToken&&Date.now()<spTokenExp-60000) return spToken;
+  if(!cfg.tenant||!cfg.client) return null;
+  try{
+    const params=new URLSearchParams({
+      client_id:cfg.client,
+      scope:'https://graph.microsoft.com/.default',
+      grant_type:'client_credentials',
+    });
+    const r=await fetch(`https://login.microsoftonline.com/${cfg.tenant}/oauth2/v2.0/token`,{
+      method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:params
+    });
+    if(!r.ok) return null;
+    const d=await r.json();
+    spToken=d.access_token; spTokenExp=Date.now()+(d.expires_in*1000);
+    return spToken;
+  }catch(e){return null;}
+}
+
+async function syncNow(){
+  if(!cfg.site){
+    toast('⚠ Configura SharePoint primero');
+    openConfigBanner();
+    return;
+  }
+  setSyncStatus('syncing','Sincronizando...');
+  try{
+    const token=await getSpToken();
+    if(!token){setSyncStatus('error','Error de autenticación');toast('⚠ No se pudo autenticar. Haz clic en "Conexión" para iniciar sesión.');return;}
+    const siteUrl=cfg.site.replace('https://','').split('/');
+    const host=siteUrl[0], sitePath='/'+siteUrl.slice(1).join('/');
+    const siteR=await fetch(`https://graph.microsoft.com/v1.0/sites/${host}:${sitePath}`,{
+      headers:{Authorization:'Bearer '+token}
+    });
+    if(!siteR.ok){setSyncStatus('error','Sitio no encontrado');toast('⚠ Verifica la URL del sitio SharePoint');return;}
+    const site=await siteR.json();
+    const listName=cfg.listname||'ProyectosCID';
+    const listR=await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists?$filter=displayName eq '${encodeURIComponent(listName)}'`,{
+      headers:{Authorization:'Bearer '+token}
+    });
+    const listData=await listR.json();
+    if(!listData.value||!listData.value.length){
+      setSyncStatus('error',`Lista "${listName}" no encontrada`);
+      toast(`⚠ Crea la lista "${listName}" en SharePoint primero`);
+      return;
+    }
+    const listId=listData.value[0].id;
+    const itemsR=await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists/${listId}/items?expand=fields&$top=500`,{
+      headers:{Authorization:'Bearer '+token}
+    });
+    const itemsData=await itemsR.json();
+    const spItems=itemsData.value||[];
+    projects=spItems.map(item=>{
+      const f=item.fields;
+      const fases=f.Fases?f.Fases.split('|').map(s=>{
+        const m=s.match(/^(.+?):(.+)$/);
+        return m?{name:m[1].trim(),estado:m[2].trim()}:{name:s.trim(),estado:'Sin Iniciar'};
+      }):[];
+      return{
+        id:item.id,_spId:item.id,
+        nombre:f.Title||'',estado:f.Estado||'Sin Iniciar',
+        prioridad:f.Prioridad||'',equipo:f.Equipo||'',
+        responsable:f.Responsable||'',avance:parseInt(f.Avance)||0,
+        fechaInicio:f.FechaInicio||'',fechaFin:f.FechaFin||'',subtasks:fases,
+      };
+    });
+    persist();render();
+    setSyncStatus('ok','Sincronizado · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}));
+    toast('✓ Sincronizado con SharePoint');
+  }catch(e){
+    setSyncStatus('error','Error de sincronización');
+    toast('⚠ Error al conectar con SharePoint');
+    console.error(e);
+  }
+}
+
+async function pushToSP(project){
+  if(!cfg.site) return;
+  try{
+    const token=await getSpToken(); if(!token) return;
+    const siteUrl=cfg.site.replace('https://','').split('/');
+    const host=siteUrl[0], sitePath='/'+siteUrl.slice(1).join('/');
+    const siteR=await fetch(`https://graph.microsoft.com/v1.0/sites/${host}:${sitePath}`,{headers:{Authorization:'Bearer '+token}});
+    const site=await siteR.json();
+    const listName=cfg.listname||'ProyectosCID';
+    const listR=await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists?$filter=displayName eq '${encodeURIComponent(listName)}'`,{headers:{Authorization:'Bearer '+token}});
+    const listData=await listR.json();
+    if(!listData.value||!listData.value.length) return;
+    const listId=listData.value[0].id;
+    const fields={
+      Title:project.nombre, Estado:project.estado, Prioridad:project.prioridad,
+      Equipo:project.equipo, Responsable:project.responsable, Avance:project.avance,
+      FechaInicio:project.fechaInicio, FechaFin:project.fechaFin,
+      Fases:(project.subtasks||[]).map(s=>s.name+':'+s.estado).join('|')
+    };
+    if(project._spId){
+      await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists/${listId}/items/${project._spId}/fields`,{
+        method:'PATCH',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(fields)
+      });
+    } else {
+      const r=await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists/${listId}/items`,{
+        method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},
+        body:JSON.stringify({fields})
+      });
+      const d=await r.json();
+      project._spId=d.id;
+    }
+  }catch(e){}
+}
+
+function setSyncStatus(state,msg){
+  const dot=document.getElementById('sync-dot');
+  const sub=document.getElementById('hdr-sub');
+  dot.className='sync-dot '+state;
+  sub.textContent=msg;
+}
+
+// ─── HELPERS ─────────────────────────────────────────────
+const SC={'En progreso':['b-prog','En progreso'],'Terminado':['b-term','Terminado'],'Sin Iniciar':['b-sin','Sin iniciar'],'Pausado':['b-pau','Pausado'],'En correcciones':['b-corr','Correcciones']};
+const PC={'High':['b-ph','Alta'],'Medium':['b-pm','Media'],'Low':['b-pl','Baja']};
+const TC=t=>!t?'':({'Mi-Books':'b-mb','CREA':'b-crea','Diseño':'b-leai','Johnas':'b-jo','Freelance':'b-fr'}[t]||'b-multi');
+const PC2=v=>v>=80?'var(--green)':v>=40?'var(--amber)':'var(--red)';
+const AVC=['accent','green','purple','coral','amber','teal'];
+const avSt=n=>{const c=AVC[(n||' ').charCodeAt(0)%AVC.length];return`background:var(--${c}-l);color:var(--${c})`;};
+const inits=n=>n?n.split(/[\s,]+/).filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
+function fmtD(d){if(!d)return'—';if(d.includes('/'))return d.split('/')[1]+'/'+d.split('/')[0]+'/'+d.split('/')[2].slice(2);if(d.includes('-'))return d.split('-')[2]+'/'+d.split('-')[1]+'/'+d.split('-')[0].slice(2);return d;}
+function effAv(p){if(p.subtasks&&p.subtasks.length)return Math.round(p.subtasks.filter(s=>s.estado==='Terminado').length/p.subtasks.length*100);return p.avance;}
+function wfCl(e){return{'Terminado':'done','En progreso':'active','Pausado':'paused','En correcciones':'corrections','Sin Iniciar':'pending'}[e]||'pending';}
+function getFiltered(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const eq=document.getElementById('fil-equipo').value;
+  const pr=document.getElementById('fil-prio').value;
+  const so=document.getElementById('fil-sort').value;
+  const tp=document.getElementById('fil-tipo').value;
+  let d=projects.filter(p=>{
+    if(currentTab!=='todos'&&p.estado!==currentTab)return false;
+    if(q&&!p.nombre.toLowerCase().includes(q)&&!p.responsable.toLowerCase().includes(q))return false;
+    if(eq&&!p.equipo.includes(eq))return false;
+    if(pr&&p.prioridad!==pr)return false;
+    if(tp&&p.tipo!==tp)return false;
+    return true;
+  });
+  if(so==='avance-desc')d.sort((a,b)=>effAv(b)-effAv(a));
+  else if(so==='avance-asc')d.sort((a,b)=>effAv(a)-effAv(b));
+  else if(so==='nombre')d.sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  else if(so==='fecha')d.sort((a,b)=>{if(!a.fechaFin&&!b.fechaFin)return 0;if(!a.fechaFin)return 1;if(!b.fechaFin)return -1;return a.fechaFin.localeCompare(b.fechaFin);});
+  return d;
+}
+
+// ─── RENDER ──────────────────────────────────────────────
+function render(){renderMetrics();renderCharts();renderStabs();renderView();}
+
+function renderMetrics(){
+  const p = projects.filter(x => x.tipo !== 'Otros');
+  const n = p.length || 1;
+  const otros = projects.filter(x => x.tipo === 'Otros').length;
+  const pr = p.filter(x => x.estado === 'En progreso').length;
+  const te = p.filter(x => x.estado === 'Terminado').length;
+  const si = p.filter(x => x.estado === 'Sin Iniciar').length;
+  const pa = p.filter(x => x.estado === 'Pausado').length;
+  const co = p.filter(x => x.estado === 'En correcciones').length;
+  const av = Math.round(p.map(effAv).reduce((a,b) => a+b, 0) / n);
+  document.getElementById('metrics').innerHTML = [
+    [p.length, 'Proyectos', 'var(--accent)', otros + ' otros productos'],
+    [pr, 'En progreso', 'var(--accent)', Math.round(pr/n*100) + '%'],
+    [te, 'Terminados', 'var(--green)', Math.round(te/n*100) + '%'],
+    [si, 'Sin iniciar', 'var(--text2)', ''],
+    [pa, 'Pausados', 'var(--amber)', ''],
+    [co, 'Correcciones', 'var(--red)', ''],
+    [av + '%', 'Avance prom.', PC2(av), p.filter(x => effAv(x) === 100).length + ' al 100%'],
+  ].map(([v,l,c,t]) => '<div class="metric"><div class="m-val" style="color:' + c + '">' + v + '</div><div class="m-lbl">' + l + '</div>' + (t ? '<div class="m-trend">' + t + '</div>' : '') + '</div>').join('');
+}
+
+function renderCharts(){
+  const allP = projects.filter(x => x.tipo !== 'Otros');
+  const teams=['Mi-Books','CREA','Diseño','Johnas','Freelance'];
+  const tColors=['var(--purple)','var(--accent)','var(--teal)','var(--coral)','var(--amber)'];
+  const td=teams.map((t,i)=>{
+    const tp=allP.filter(p=>p.equipo.includes(t));
+    return{name:t,total:tp.length,done:tp.filter(p=>p.estado==='Terminado').length,av:tp.length?Math.round(tp.map(effAv).reduce((a,b)=>a+b,0)/tp.length):0,c:tColors[i]};
+  }).filter(t=>t.total>0).sort((a,b)=>b.total-a.total);
+  const mx=Math.max(1,...td.map(t=>t.total));
+  const estats=[{l:'En progreso',n:allP.filter(p=>p.estado==='En progreso').length,c:'var(--accent)'},{l:'Terminado',n:allP.filter(p=>p.estado==='Terminado').length,c:'var(--green)'},{l:'Sin Iniciar',n:allP.filter(p=>p.estado==='Sin Iniciar').length,c:'var(--text3)'},{l:'Pausado',n:allP.filter(p=>p.estado==='Pausado').length,c:'var(--amber)'},{l:'Correcciones',n:allP.filter(p=>p.estado==='En correcciones').length,c:'var(--red)'}].filter(e=>e.n>0);
+  const tot=allP.length||1;
+  let off=0; const r=42,cx=54,cy=54,ci=2*Math.PI*r;
+  const segs=estats.map(e=>{const len=ci*e.n/tot;const s={...e,off,len};off+=len;return s;});
+  document.getElementById('charts').innerHTML=`
+    <div class="card">
+      <div class="card-title">Proyectos por equipo · completados / avance</div>
+      ${td.map(t=>`<div class="team-row">
+        <div class="team-name">${t.name}</div>
+        <div class="team-bar-wrap"><div class="team-bar" style="width:${Math.round(t.total/mx*100)}%;background:${t.c}"></div></div>
+        <div class="team-stat">${t.done}/${t.total} · ${t.av}%</div>
+      </div>`).join('')}
+    </div>
+    <div class="card">
+      <div class="card-title">Distribución por estado</div>
+      <div class="donut-wrap">
+        <svg width="108" height="108" viewBox="0 0 108 108" flex-shrink="0">
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--border)" stroke-width="12"/>
+          ${segs.map(s=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.c}" stroke-width="12"
+            stroke-dasharray="${s.len} ${ci-s.len}" stroke-dashoffset="${-s.off}" transform="rotate(-90 ${cx} ${cy})"/>`).join('')}
+          <text x="${cx}" y="${cy-5}" text-anchor="middle" font-size="18" font-weight="600" fill="var(--text)">${tot}</text>
+          <text x="${cx}" y="${cy+10}" text-anchor="middle" font-size="9" fill="var(--text2)">proyectos</text>
+        </svg>
+        <div class="donut-legend">${estats.map(e=>`<div class="legend-item"><div class="legend-dot" style="background:${e.c}"></div><span class="legend-text">${e.l}</span><span class="legend-pct">${e.n} · ${Math.round(e.n/tot*100)}%</span></div>`).join('')}</div>
+      </div>
+    </div>`;
+}
+
+function renderStabs(){
+  const tabs=[['todos','Todos',projects.length],['En progreso','En progreso',projects.filter(p=>p.estado==='En progreso').length],['Terminado','Terminados',projects.filter(p=>p.estado==='Terminado').length],['Sin Iniciar','Sin iniciar',projects.filter(p=>p.estado==='Sin Iniciar').length],['Pausado','Pausados',projects.filter(p=>p.estado==='Pausado').length],['En correcciones','Correcciones',projects.filter(p=>p.estado==='En correcciones').length]];
+  document.getElementById('stabs').innerHTML=tabs.map(([k,l,n])=>`<div class="stab ${currentTab===k?'active':''}" onclick="setTab('${k}')">${l}<span class="stab-n">${n}</span></div>`).join('');
+}
+
+function renderView(){
+  const data=getFiltered();
+  const vc=document.getElementById('view-area');
+  if(currentView==='table') vc.innerHTML=renderTable(data);
+  else if(currentView==='kanban') vc.innerHTML=renderKanban(data);
+  else vc.innerHTML=renderCards(data);
+}
+
+function renderTable(data){
+  const dataP = data.filter(p => p.tipo !== 'Otros');
+  const dataO = data.filter(p => p.tipo === 'Otros');
+  const tot = dataP.length;
+  const tp = Math.max(1, Math.ceil(tot / PAGE));
+  if(currentPage > tp) currentPage = 1;
+  const sl = dataP.slice((currentPage-1)*PAGE, currentPage*PAGE);
+
+  const mkRow = p => {
+    const av = effAv(p);
+    const hs = p.subtasks && p.subtasks.length > 0;
+    const ie = expandedIds.has(p.id);
+    const sc = SC[p.estado] || SC['Sin Iniciar'];
+    const pc = PC[p.prioridad];
+    const tc = TC(p.equipo.includes(',') ? 'multi' : p.equipo);
+    const si = hs ? p.subtasks.filter(s => s.estado === 'Terminado').length + '/' + p.subtasks.length : '';
+    let rows = '<tr class="' + (ie ? 'open' : '') + '" onclick="toggleExpand(' + p.id + ')">'
+      + '<td><div class="exp-btn ' + (hs ? (ie ? 'open' : '') : '') + '" style="' + (hs ? '' : 'opacity:.2;cursor:default') + '" onclick="event.stopPropagation();' + (hs ? 'toggleExpand(' + p.id + ')' : '') + '">▶</div></td>'
+      + '<td class="td-name" title="' + p.nombre + '">' + p.nombre + '</td>'
+      + '<td><span class="badge ' + sc[0] + '">' + sc[1] + '</span></td>'
+      + '<td>' + (pc ? '<span class="badge ' + pc[0] + '">' + pc[1] + '</span>' : '<span style="color:var(--text3)">—</span>') + '</td>'
+      + '<td>' + (p.equipo ? '<span class="badge ' + tc + '" style="font-size:10px;max-width:110px;overflow:hidden;text-overflow:ellipsis;display:inline-block">' + p.equipo + '</span>' : '—') + '</td>'
+      + '<td><div style="display:flex;align-items:center;gap:5px">' + (p.responsable ? '<div class="av" style="' + avSt(p.responsable) + '">' + inits(p.responsable) + '</div>' : '') + '<span style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px">' + (p.responsable || '<span style="color:var(--text3)">—</span>') + '</span></div></td>'
+      + '<td><div class="prog-inline"><div class="prog-bar-sm"><div class="prog-fill" style="width:' + av + '%;background:' + PC2(av) + '"></div></div><span class="prog-pct">' + av + '%' + (si ? ' (' + si + ')' : '') + '</span></div></td>'
+      + '<td style="font-size:11px;color:var(--text2);font-family:var(--mono)">' + fmtD(p.fechaFin) + '</td>'
+      + '<td onclick="event.stopPropagation()"><div style="display:flex;gap:3px"><button class="exp-btn" style="width:24px;height:24px;font-size:12px" onclick="openModal(' + p.id + ')">✎</button><button class="exp-btn" style="width:24px;height:24px;font-size:11px" onclick="delProject(' + p.id + ')">✕</button></div></td>'
+      + '</tr>';
+    if(hs) {
+      rows += '<tr class="pipe-row ' + (ie ? 'open' : '') + '"><td colspan="9"><div class="pipe-inner"><div class="pipe-lbl">Pipeline · ' + p.subtasks.filter(s => s.estado === 'Terminado').length + ' de ' + p.subtasks.length + ' completadas</div><div class="wf-steps">'
+        + p.subtasks.map((s,i) => '<div class="wf-step">' + (i > 0 ? '<span class="wf-arrow">›</span>' : '') + '<div class="wf-node ' + wfCl(s.estado) + '">' + (s.estado === 'Terminado' ? '✓' : s.estado === 'En progreso' ? '●' : s.estado === 'Pausado' ? '⏸' : '○') + ' ' + s.name + '</div></div>').join('')
+        + '</div></div></td></tr>';
+    }
+    return rows;
+  };
+
+  let h = '<div class="tbl-card"><table><thead><tr>'
+    + '<th style="width:3%"></th>'
+    + '<th style="width:26%">Proyecto</th>'
+    + '<th style="width:11%">Estado</th>'
+    + '<th style="width:9%">Prioridad</th>'
+    + '<th style="width:12%">Equipo</th>'
+    + '<th style="width:14%">Responsable</th>'
+    + '<th style="width:14%">Avance</th>'
+    + '<th style="width:9%">Fecha límite</th>'
+    + '<th style="width:6%"></th>'
+    + '</tr></thead><tbody>';
+
+  if(!sl.length) {
+    h += '<tr><td colspan="9" class="empty-state">No se encontraron proyectos</td></tr>';
+  } else {
+    sl.forEach(p => { h += mkRow(p); });
+  }
+
+  h += '</tbody></table><div class="pager"><span>'
+    + (sl.length ? ((currentPage-1)*PAGE+1) + '–' + Math.min(currentPage*PAGE, tot) + ' de ' + tot + ' proyectos' : '')
+    + '</span><div class="pg-btns">'
+    + '<button class="pg-btn" onclick="chPage(' + (currentPage-1) + ')" ' + (currentPage<=1 ? 'disabled' : '') + '>‹</button>'
+    + Array.from({length:tp},(_,i)=>i+1).filter(n=>Math.abs(n-currentPage)<=2).map(n => '<button class="pg-btn ' + (n===currentPage?'active':'') + '" onclick="chPage(' + n + ')">' + n + '</button>').join('')
+    + '<button class="pg-btn" onclick="chPage(' + (currentPage+1) + ')" ' + (currentPage>=tp ? 'disabled' : '') + '>›</button>'
+    + '</div></div></div>';
+
+  // Otros section - collapsible
+  if(dataO.length) {
+    var otrosOpen = window._otrosOpen || false;
+    h += '<div style="margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">';
+    h += '<div style="padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:var(--surface2);border-bottom:' + (otrosOpen ? '1px solid var(--border)' : 'none') + '" onclick="toggleOtros()">';
+    h += '<div style="display:flex;align-items:center;gap:8px">';
+    h += '<span style="font-size:12px;font-weight:500;color:var(--text2)">Otros productos</span>';
+    h += '<span style="font-size:10px;font-family:var(--mono);background:var(--gray-l);color:var(--gray);padding:1px 8px;border-radius:20px">' + dataO.length + '</span>';
+    h += '<span style="font-size:10px;color:var(--text3)">tutoriales, MOOCs, CDAs · no cuentan en métricas</span>';
+    h += '</div>';
+    h += '<span style="font-size:11px;color:var(--text2);transition:transform .2s;display:inline-block;transform:rotate(' + (otrosOpen ? '90deg' : '0deg') + ')">▶</span>';
+    h += '</div>';
+    if(otrosOpen) {
+      h += '<table style="width:100%;border-collapse:collapse;font-size:13px"><tbody>';
+      dataO.forEach(p => { h += mkRow(p); });
+      h += '</tbody></table>';
+    }
+    h += '</div>';
+  }
+
+  return h;
+}
+
+function toggleOtros(){
+  window._otrosOpen = !window._otrosOpen;
+  renderView();
+}
+
+
+function renderKanban(data){
+  const cols=[{k:'En progreso',l:'En progreso',c:'var(--accent)'},{k:'En correcciones',l:'Correcciones',c:'var(--red)'},{k:'Sin Iniciar',l:'Sin iniciar',c:'var(--text3)'},{k:'Pausado',l:'Pausados',c:'var(--amber)'},{k:'Terminado',l:'Terminados',c:'var(--green)'}];
+  return`<div class="kanban">${cols.map(col=>{const items=data.filter(p=>p.estado===col.k);return`<div class="kol"><div class="kol-hdr"><div class="kol-title"><span style="width:8px;height:8px;border-radius:50%;background:${col.c};display:inline-block"></span>${col.l}</div><span class="kol-n">${items.length}</span></div><div class="kol-body">${items.length?items.map(p=>{const av=effAv(p);return`<div class="k-card" onclick="openModal(${p.id})"><div class="k-name">${p.nombre}</div><div style="display:flex;gap:4px;flex-wrap:wrap">${p.prioridad&&PC[p.prioridad]?`<span class="badge ${PC[p.prioridad][0]}" style="font-size:9px">${PC[p.prioridad][1]}</span>`:''}<span class="badge ${TC(p.equipo.includes(',')?'multi':p.equipo)}" style="font-size:9px;max-width:80px;overflow:hidden;text-overflow:ellipsis">${p.equipo}</span></div><div class="k-prog-bar"><div class="k-prog-fill" style="width:${av}%;background:${PC2(av)}"></div></div><div class="k-prog-lbl">${av}%${p.subtasks&&p.subtasks.length?` · ${p.subtasks.filter(s=>s.estado==='Terminado').length}/${p.subtasks.length} fases`:''}</div></div>`;}).join(''):`<div style="font-size:11px;color:var(--text3);padding:.25rem 0">Sin proyectos</div>`}</div></div>`;}).join('')}</div>`;
+}
+
+function renderCards(data){
+  const sCl={'En progreso':'','Terminado':'s-term','Sin Iniciar':'s-sin','Pausado':'s-pau','En correcciones':'s-corr'};
+  return`<div class="cards-grid">${data.map(p=>{const av=effAv(p),sc=SC[p.estado]||SC['Sin Iniciar'],hs=p.subtasks&&p.subtasks.length>0;return`<div class="p-card ${sCl[p.estado]||''}" onclick="openModal(${p.id})"><div class="pc-top"><div class="pc-name">${p.nombre}</div><span class="badge ${sc[0]}" style="font-size:9px;flex-shrink:0">${sc[1]}</span></div><div class="pc-meta">${p.equipo?`<span class="badge ${TC(p.equipo.includes(',')?'multi':p.equipo)}" style="font-size:9px">${p.equipo}</span>`:''} ${p.responsable?`<div style="display:flex;align-items:center;gap:4px"><div class="av" style="${avSt(p.responsable)};width:18px;height:18px;font-size:8px">${inits(p.responsable)}</div><span style="font-size:11px;color:var(--text2)">${p.responsable.split(',')[0].trim()}</span></div>`:''}</div><div class="pc-prog-bar"><div class="pc-prog-fill" style="width:${av}%;background:${PC2(av)}"></div></div><div style="display:flex;justify-content:space-between;margin-top:4px"><span style="font-size:10px;color:var(--text2)">${av}%${hs?` · ${p.subtasks.filter(s=>s.estado==='Terminado').length}/${p.subtasks.length} fases`:''}</span>${p.fechaFin?`<span style="font-size:10px;color:var(--text3);font-family:var(--mono)">${fmtD(p.fechaFin)}</span>`:''}</div>${hs?`<div class="pc-steps">${p.subtasks.map(s=>`<div class="pc-step ${wfCl(s.estado)}" title="${s.name}: ${s.estado}"></div>`).join('')}</div>`:''}</div>`;}).join('')||'<div class="empty-state">No se encontraron proyectos</div>'}</div>`;
+}
+
+// ─── INTERACTIONS ────────────────────────────────────────
+function setTab(t){currentTab=t;currentPage=1;render();}
+function setView(v,el){currentView=v;currentPage=1;document.querySelectorAll('.view-tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderView();}
+function applyFilters(){currentPage=1;renderView();renderStabs();}
+function chPage(n){const tp=Math.max(1,Math.ceil(getFiltered().length/PAGE));if(n<1||n>tp)return;currentPage=n;renderView();}
+function toggleExpand(id){expandedIds.has(id)?expandedIds.delete(id):expandedIds.add(id);renderView();}
+
+// ─── MODAL ───────────────────────────────────────────────
+function openModal(id=null){
+  editingId=id;
+  document.getElementById('modal-title').textContent=id?'Editar proyecto':'Nuevo proyecto';
+  const foot=document.getElementById('modal-foot');
+  if(id){
+    const p=projects.find(x=>x.id===id);
+    document.getElementById('f-nombre').value=p.nombre;
+    document.getElementById('f-estado').value=p.estado;
+    document.getElementById('f-prio').value=p.prioridad||'';
+    document.getElementById('f-equipo-m').value=p.equipo||'Mi-Books';
+    document.getElementById('f-resp').value=p.responsable;
+    document.getElementById('f-prog').value=p.avance;
+    document.getElementById('f-tipo').value=p.tipo||'Proyecto';
+    const fd=p.fechaFin?p.fechaFin.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$1-$2'):'';
+    document.getElementById('f-fecha').value=fd;
+    document.getElementById('f-subtasks').value=(p.subtasks||[]).map(s=>s.name+(s.estado!=='Sin Iniciar'?` [${s.estado}]`:'')).join(', ');
+    foot.innerHTML=`<button class="btn-danger" onclick="delProject(${id});closeModal()">Eliminar</button><div style="flex:1"></div><button class="btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveProject()">Guardar cambios</button>`;
+  }else{
+    ['f-nombre','f-resp','f-subtasks','f-fecha'].forEach(fid=>document.getElementById(fid).value='');
+    document.getElementById('f-estado').value='En progreso';
+    document.getElementById('f-prio').value='Medium';
+    document.getElementById('f-equipo-m').value='Mi-Books';
+    document.getElementById('f-prog').value='0';
+    foot.innerHTML=`<button class="btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveProject()">Guardar proyecto</button>`;
+  }
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeModal(){document.getElementById('modal-bg').classList.remove('open');}
+
+async function saveProject(){
+  const nombre=document.getElementById('f-nombre').value.trim();
+  if(!nombre){toast('⚠ El nombre es obligatorio');return;}
+  const fdRaw=document.getElementById('f-fecha').value;
+  let fechaFin='';
+  if(fdRaw){const[y,m,d]=fdRaw.split('-');fechaFin=`${m}/${d}/${y}`;}
+  const subRaw=document.getElementById('f-subtasks').value;
+  const subtasks=subRaw?subRaw.split(',').map(s=>{s=s.trim();const m=s.match(/^(.+?)\s*\[(.+?)\]$/);return m?{name:m[1].trim(),estado:m[2].trim()}:{name:s,estado:'Sin Iniciar'};}).filter(s=>s.name):[];
+  const data={nombre,tipo:document.getElementById('f-tipo').value,estado:document.getElementById('f-estado').value,prioridad:document.getElementById('f-prio').value,equipo:document.getElementById('f-equipo-m').value,responsable:document.getElementById('f-resp').value,avance:Math.min(100,Math.max(0,parseInt(document.getElementById('f-prog').value)||0)),fechaInicio:'',fechaFin,subtasks};
+  if(editingId){const idx=projects.findIndex(p=>p.id===editingId);projects[idx]={...projects[idx],...data};if(cfg.site)pushToSP(projects[idx]);}
+  else{data.id=Date.now();projects.push(data);if(cfg.site)pushToSP(data);}
+  persist();closeModal();render();
+  toast(editingId?'✓ Proyecto actualizado':'✓ Proyecto creado');
+}
+
+async function delProject(id){
+  if(!confirm('¿Eliminar este proyecto?'))return;
+  projects=projects.filter(p=>p.id!==id);persist();render();toast('Proyecto eliminado');
+}
+
+// ─── REPORTS ────────────────────────────────────────────
+function openReport(){document.getElementById('report-bg').classList.add('open');genReport('ejecutivo');}
+function closeReport(){document.getElementById('report-bg').classList.remove('open');}
+
+function genReport(type){
+  const now=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
+  const tot=projects.length;
+  const pr=projects.filter(p=>p.estado==='En progreso');
+  const te=projects.filter(p=>p.estado==='Terminado');
+  const pa=projects.filter(p=>p.estado==='Pausado');
+  const co=projects.filter(p=>p.estado==='En correcciones');
+  const si=projects.filter(p=>p.estado==='Sin Iniciar');
+  const av=Math.round(projects.map(effAv).reduce((a,b)=>a+b,0)/(tot||1));
+  let txt='';
+  if(type==='ejecutivo'){
+    txt=`REPORTE EJECUTIVO — COORDINACIÓN DE INNOVACIÓN Y DESARROLLO VIRTUAL\n${'─'.repeat(65)}\nFecha: ${now}\n\nRESUMEN GENERAL\n  Total de proyectos:    ${tot}\n  En progreso:           ${pr.length} (${Math.round(pr.length/tot*100)}%)\n  Terminados:            ${te.length} (${Math.round(te.length/tot*100)}%)\n  Sin iniciar:           ${si.length}\n  Pausados:              ${pa.length}\n  En correcciones:       ${co.length}\n  Avance promedio:       ${av}%\n\nPROYECTOS EN PROGRESO (${pr.length})\n${pr.map(p=>`  · ${p.nombre} — ${effAv(p)}% — ${p.responsable||'Sin responsable'}`).join('\n')}\n\nEN CORRECCIONES (${co.length})\n${co.length?co.map(p=>`  ⚠ ${p.nombre} — ${p.responsable||'Sin responsable'}`).join('\n'):'  Ninguno'}\n\nPAUSADOS (${pa.length})\n${pa.length?pa.map(p=>`  ⏸ ${p.nombre} — ${p.responsable||'Sin responsable'}`).join('\n'):'  Ninguno'}\n`;
+  } else if(type==='equipo'){
+    const teams=['Mi-Books','CREA','Diseño','Johnas','Freelance'];
+    txt=`REPORTE POR EQUIPO — ${now}\n${'─'.repeat(65)}\n`;
+    teams.forEach(t=>{
+      const tp=allP.filter(p=>p.equipo.includes(t));
+      if(!tp.length)return;
+      const tav=Math.round(tp.map(effAv).reduce((a,b)=>a+b,0)/tp.length);
+      txt+=`\n${t.toUpperCase()} (${tp.length} proyectos · avance ${tav}%)\n`;
+      tp.forEach(p=>txt+=`  ${p.estado==='Terminado'?'✓':p.estado==='En progreso'?'●':'○'} ${p.nombre} — ${effAv(p)}%\n`);
+    });
+  } else if(type==='atrasados'){
+    const today=new Date();
+    const late=projects.filter(p=>{
+      if(!p.fechaFin||p.estado==='Terminado')return false;
+      const parts=p.fechaFin.split('/');
+      const d=new Date(parts[2],parts[0]-1,parts[1]);
+      return d<today;
+    });
+    txt=`PROYECTOS ATRASADOS — ${now}\n${'─'.repeat(65)}\n\n`;
+    if(!late.length)txt+='No hay proyectos atrasados. ✓\n';
+    else late.forEach(p=>{txt+=`⚠ ${p.nombre}\n   Estado: ${p.estado} · Avance: ${effAv(p)}%\n   Fecha límite: ${fmtD(p.fechaFin)}\n   Responsable: ${p.responsable||'Sin asignar'}\n\n`;});
+  } else {
+    txt=`REPORTE COMPLETO — ${now}\n${'─'.repeat(65)}\n`;
+    projects.forEach(p=>{
+      txt+=`\n${p.nombre}\n  Estado: ${p.estado} | Prioridad: ${p.prioridad||'—'} | Equipo: ${p.equipo||'—'}\n  Responsable: ${p.responsable||'—'} | Avance: ${effAv(p)}%\n`;
+      if(p.subtasks&&p.subtasks.length)txt+=`  Fases: ${p.subtasks.map(s=>(s.estado==='Terminado'?'✓':s.estado==='En progreso'?'●':'○')+s.name).join(' › ')}\n`;
+    });
+  }
+  document.getElementById('report-text').textContent=txt;
+}
+
+function copyReport(){navigator.clipboard.writeText(document.getElementById('report-text').textContent);toast('✓ Copiado al portapapeles');}
+function exportReportTxt(){const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(document.getElementById('report-text').textContent);a.download='reporte_cid_'+new Date().toISOString().slice(0,10)+'.txt';a.click();}
+
+// ─── IMPORT / EXPORT ────────────────────────────────────
+function importCSV(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const text=ev.target.result;
+    const lines=text.split('\n');
+    const headers=lines[0].replace(/^\uFEFF/,'').split(',').map(h=>h.trim().replace(/^"|"$/g,''));
+    const SKIP=new Set(['Diseño','Edición y C. E.','Entregado','Publicado','Asignado','Enviado a Revisión','En correcciones','Publicación','Edición','Planeación','Ajustes','Entrega Final','Entrega Inicial','Reunión Inicial','Runión Inicial','Levantamiento de Material','Construcción de guión','Grabación de Audios John','Grabación otras voces','Entrega','Links SoundCLoud','Diseño Pedagógico','Actividad 3','Actividad 4','Actividad 6','Actividad 7','Ajuste Recorrido']);
+    const idx=h=>headers.indexOf(h);
+    const imp=[];
+    for(let i=1;i<lines.length;i++){
+      if(!lines[i].trim())continue;
+      const c=lines[i].split(',').map(x=>x.trim().replace(/^"|"$/g,''));
+      const name=(c[idx('Project name')]||'').trim();
+      if(!name||SKIP.has(name))continue;
+      const rollup=parseFloat(c[idx('Rollup')]||'0')||0;
+      imp.push({id:Date.now()+i,nombre:name,estado:c[idx('Status')]||'Sin Iniciar',prioridad:c[idx('Priority')]||'',equipo:c[idx('Team')]||'',responsable:c[idx('Responsable')]||'',avance:Math.round(rollup*100),fechaInicio:c[idx('Start date')]||'',fechaFin:c[idx('End date')]||'',subtasks:[]});
+    }
+    if(imp.length){if(confirm(`${imp.length} proyectos encontrados. ¿Reemplazar datos actuales?`)){projects=imp;persist();render();toast(`✓ ${imp.length} proyectos importados`);}}
+    else toast('⚠ No se encontraron proyectos en el archivo');
+    e.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+function exportCSV(){
+  const h=['Nombre','Estado','Prioridad','Equipo','Responsable','Avance (%)','Fecha Fin','Fases'];
+  const rows=projects.map(p=>[`"${p.nombre}"`,p.estado,p.prioridad,`"${p.equipo}"`,`"${p.responsable}"`,effAv(p),p.fechaFin,`"${(p.subtasks||[]).map(s=>s.name+':'+s.estado).join('|')}"`]);
+  const csv=[h,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='cid_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  toast('✓ CSV exportado');
+}
+
+// ─── THEME ───────────────────────────────────────────────
+function toggleTheme(){const d=document.documentElement,dk=d.getAttribute('data-theme')==='dark';d.setAttribute('data-theme',dk?'':'dark');document.getElementById('theme-btn').textContent=dk?'🌙':'☀️';try{localStorage.setItem('cid_theme',dk?'light':'dark');}catch(e){}}
+function initTheme(){try{const t=localStorage.getItem('cid_theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('theme-btn').textContent='☀️';}}catch(e){}}
+
+// ─── TOAST ───────────────────────────────────────────────
+let toastTimer;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3000);}
+
+// ─── KEYBOARD ────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeModal();closeReport();}
+  if(e.key==='/'&&!e.target.closest('input,select,textarea')){e.preventDefault();document.getElementById('search').focus();}
+});
+['modal-bg','report-bg'].forEach(id=>document.getElementById(id).addEventListener('click',e=>{if(e.target.id===id){closeModal();closeReport();}}));
+
+init();
+</script>
+</body>
+</html>
