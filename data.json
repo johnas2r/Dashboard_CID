@@ -1292,5 +1292,27 @@
     "fechaFin": "",
     "tipo": "Proyecto",
     "subtasks": []
+  },
+  {
+    "nombre": "prueba",
+    "tipo": "Otros",
+    "estado": "En progreso",
+    "prioridad": "Medium",
+    "equipo": "Johnas",
+    "responsable": "",
+    "avance": 50,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "subtasks": [
+      {
+        "name": "diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "edición",
+        "estado": "Sin Iniciar"
+      }
+    ],
+    "id": 1775662496639
   }
 ]
