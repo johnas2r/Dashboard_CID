@@ -275,11 +275,11 @@ td{padding:9px 12px;vertical-align:middle}
     </div>
   </div>
   <div class="hdr-right">
-    <button class="btn-icon" onclick="syncNow()" id="sync-btn" title="Sincronizar con SharePoint">
+    <button class="btn-icon" onclick="syncNow()" id="sync-btn" title="Sincronizar con GitHub">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
       Sincronizar
     </button>
-    <button class="btn-icon" onclick="openConfigBanner()" title="Configurar conexión SharePoint">
+    <button class="btn-icon" onclick="openConfigBanner()" title="Configurar conexión GitHub">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       Conexión
     </button>
@@ -299,22 +299,21 @@ td{padding:9px 12px;vertical-align:middle}
   <div class="config-banner" id="config-banner">
     <div class="cb-icon">⚙️</div>
     <div class="cb-body">
-      <div class="cb-title">Conectar con SharePoint</div>
-      <div class="cb-desc">Ingresa la URL de tu sitio SharePoint y haz clic en <strong>Iniciar sesión</strong>. Se abrirá la ventana de Microsoft para autenticarte con tu cuenta de trabajo — sin necesidad de Tenant ID ni Client ID.</div>
+      <div class="cb-title">Conectar con GitHub</div>
+      <div class="cb-desc">Los datos se guardan en tu repositorio GitHub y se comparten en tiempo real con todos los que tengan acceso. Solo necesitas un token de GitHub.</div>
       <div class="cb-fields" style="grid-template-columns:1fr 1fr">
-        <div class="cb-field"><label>URL del sitio SharePoint</label><input type="text" id="cfg-site" placeholder="https://empresa.sharepoint.com/sites/cid"></div>
-        <div class="cb-field"><label>Nombre de la lista</label><input type="text" id="cfg-listname" placeholder="ProyectosCID"></div>
+        <div class="cb-field"><label>Usuario GitHub</label><input type="text" id="cfg-ghuser" placeholder="johnas2r"></div>
+        <div class="cb-field"><label>Repositorio</label><input type="text" id="cfg-ghrepo" placeholder="Dashboard_CID"></div>
+      </div>
+      <div class="cb-fields" style="grid-template-columns:1fr">
+        <div class="cb-field"><label>Token de GitHub (con permiso repo)</label><input type="password" id="cfg-ghtoken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"></div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn-save" style="font-size:12px;padding:6px 14px" onclick="saveConfig()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          Iniciar sesión con Microsoft
-        </button>
-        <button class="btn-ghost" style="font-size:12px;padding:6px 14px" onclick="dismissConfig()">Usar sin SharePoint</button>
-        <span style="font-size:11px;color:var(--text3);margin-left:4px">o importar datos manualmente →</span>
+        <button class="btn-save" style="font-size:12px;padding:6px 14px" onclick="saveConfig()">Guardar y sincronizar</button>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 14px" onclick="dismissConfig()">Usar sin sincronización</button>
         <button class="btn-icon" style="font-size:11px" onclick="document.getElementById('csv-file').click()">↑ Importar CSV</button>
       </div>
-      <div id="cfg-status" style="font-size:11px;color:var(--text3);margin-top:8px;font-family:var(--mono);min-height:16px"></div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px;font-family:var(--mono)">El token se guarda solo en este navegador y nunca se comparte.</div>
     </div>
   </div>
 
@@ -422,234 +421,129 @@ const NOTION_DATA = [{"id": 1, "nombre": "Naturaleza movimiento materia y transf
 
 // ─── STATE ───────────────────────────────────────────────
 const SK='cid_v5', CFG_KEY='cid_cfg';
-let projects=[], cfg={site:'',listname:'ProyectosCID'}, msalApp=null, spToken=null, spTokenExp=0;
+let projects=[], cfg={ghuser:'',ghrepo:'',ghtoken:''}, ghFileSha=null;
 let currentTab='todos', currentPage=1, currentView='table', editingId=null;
 const expandedIds=new Set();
 const PAGE=15;
 
-// ─── MSAL CONFIG ─────────────────────────────────────────
-// Client ID público de Microsoft para apps de primera parte (no requiere registro en Azure)
-const MSAL_CLIENT_ID = 'f8bf5fd3-1b33-4b58-a716-7b9016e0583a'; // Dashboard CID - Poligran
+// ─── GITHUB API ──────────────────────────────────────────
+const GH_FILE = 'data.json';
 
-async function getMsalApp(){
-  if(msalApp) return msalApp;
-  // Cargar MSAL desde CDN si no está disponible
-  if(!window.msal){
-    await new Promise((res,rej)=>{
-      const s=document.createElement('script');
-      s.src='https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js';
-      s.onload=res; s.onerror=rej;
-      document.head.appendChild(s);
-    });
-  }
-  const tenantId = 'dd505be5-ec69-47f5-92df-caa55febf5fa'; // Poligran
-  msalApp = new msal.PublicClientApplication({
-    auth:{
-      clientId: MSAL_CLIENT_ID,
-      authority: `https://login.microsoftonline.com/${tenantId}`,
-      redirectUri: window.location.href.split('?')[0].split('#')[0],
-    },
-    cache:{ cacheLocation:'sessionStorage' }
+async function ghFetch(path, options={}){
+  const url = `https://api.github.com/repos/${cfg.ghuser}/${cfg.ghrepo}/contents/${path}`;
+  const res = await fetch(url, {
+    ...options,
+    headers:{
+      'Authorization': `token ${cfg.ghtoken}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      ...(options.headers||{})
+    }
   });
-  await msalApp.initialize();
-  return msalApp;
+  return res;
 }
 
-async function getSpToken(){
-  if(spToken && Date.now() < spTokenExp - 60000) return spToken;
-  try{
-    const app = await getMsalApp();
-    const accounts = app.getAllAccounts();
-    const req = { scopes:['https://graph.microsoft.com/Sites.ReadWrite.All'] };
-    let resp;
-    if(accounts.length > 0){
-      try{ resp = await app.acquireTokenSilent({...req, account:accounts[0]}); }
-      catch(e){ resp = await app.acquireTokenPopup(req); }
-    } else {
-      resp = await app.acquireTokenPopup(req);
-    }
-    spToken = resp.accessToken;
-    spTokenExp = Date.now() + (resp.expiresOn ? (resp.expiresOn - Date.now()) : 3600000);
-    return spToken;
-  }catch(e){
-    console.error('Auth error:', e);
-    return null;
+async function syncNow(){
+  if(!cfg.ghtoken || !cfg.ghuser || !cfg.ghrepo){
+    toast('⚠ Configura GitHub primero');
+    openConfigBanner();
+    return;
   }
+  setSyncStatus('syncing','Sincronizando...');
+  try{
+    const res = await ghFetch(GH_FILE);
+    if(res.status === 404){
+      // Archivo no existe aún — crearlo con datos actuales
+      await pushToGH();
+      setSyncStatus('ok','Datos subidos a GitHub · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}));
+      toast('✓ Archivo creado en GitHub');
+      return;
+    }
+    if(!res.ok){ setSyncStatus('error','Error al leer GitHub'); toast('⚠ Verifica usuario, repo y token'); return; }
+    const data = await res.json();
+    ghFileSha = data.sha;
+    const content = JSON.parse(atob(data.content.replace(/\n/g,'')));
+    projects = content;
+    persist(); render();
+    setSyncStatus('ok','Sincronizado · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}));
+    toast('✓ Sincronizado con GitHub');
+  }catch(e){
+    setSyncStatus('error','Error de sincronización');
+    toast('⚠ Error al conectar con GitHub');
+    console.error(e);
+  }
+}
+
+async function pushToGH(){
+  if(!cfg.ghtoken || !cfg.ghuser || !cfg.ghrepo) return;
+  try{
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(projects, null, 2))));
+    const body = {
+      message: 'Update dashboard data',
+      content,
+      ...(ghFileSha ? {sha: ghFileSha} : {})
+    };
+    const res = await ghFetch(GH_FILE, { method:'PUT', body: JSON.stringify(body) });
+    if(res.ok){
+      const data = await res.json();
+      ghFileSha = data.content.sha;
+    }
+  }catch(e){ console.error('pushToGH error:', e); }
 }
 
 // ─── INIT ────────────────────────────────────────────────
 async function init(){
   initTheme();
   try{
-    const rc=await window.storage.get(CFG_KEY);
+    const rc = await window.storage.get(CFG_KEY);
     if(rc){ cfg={...cfg,...JSON.parse(rc.value)}; applyConfig(); }
   }catch(e){}
   try{
-    const r=await window.storage.get(SK);
-    projects=r?JSON.parse(r.value):JSON.parse(JSON.stringify(NOTION_DATA));
-  }catch(e){projects=JSON.parse(JSON.stringify(NOTION_DATA));}
+    const r = await window.storage.get(SK);
+    projects = r ? JSON.parse(r.value) : JSON.parse(JSON.stringify(NOTION_DATA));
+  }catch(e){ projects = JSON.parse(JSON.stringify(NOTION_DATA)); }
   checkConfigBanner();
   render();
   setSyncStatus('ok','Listo · datos locales');
 }
 
 function checkConfigBanner(){
-  const banner=document.getElementById('config-banner');
-  if(cfg.site) banner.classList.add('hidden');
+  const banner = document.getElementById('config-banner');
+  if(cfg.ghtoken && cfg.ghuser && cfg.ghrepo) banner.classList.add('hidden');
 }
 
 async function persist(){
-  try{await window.storage.set(SK,JSON.stringify(projects));}catch(e){}
+  try{ await window.storage.set(SK, JSON.stringify(projects)); }catch(e){}
 }
 
-// ─── SHAREPOINT AUTH (MSAL implicit) ────────────────────
+// ─── CONFIG ──────────────────────────────────────────────
 function applyConfig(){
-  document.getElementById('cfg-site').value=cfg.site||'';
-  document.getElementById('cfg-listname').value=cfg.listname||'ProyectosCID';
+  document.getElementById('cfg-ghuser').value  = cfg.ghuser  || '';
+  document.getElementById('cfg-ghrepo').value  = cfg.ghrepo  || '';
+  document.getElementById('cfg-ghtoken').value = cfg.ghtoken || '';
 }
 
 function openConfigBanner(){
   applyConfig();
   document.getElementById('config-banner').classList.remove('hidden');
-  document.getElementById('config-banner').scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('config-banner').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 async function saveConfig(){
-  const site = document.getElementById('cfg-site').value.trim();
-  const listname = document.getElementById('cfg-listname').value.trim() || 'ProyectosCID';
-  if(!site){ toast('⚠ Ingresa la URL del sitio SharePoint'); return; }
-  cfg = { site, listname };
+  const ghuser  = document.getElementById('cfg-ghuser').value.trim();
+  const ghrepo  = document.getElementById('cfg-ghrepo').value.trim();
+  const ghtoken = document.getElementById('cfg-ghtoken').value.trim();
+  if(!ghuser || !ghrepo || !ghtoken){ toast('⚠ Completa los tres campos'); return; }
+  cfg = { ghuser, ghrepo, ghtoken };
   try{ await window.storage.set(CFG_KEY, JSON.stringify(cfg)); }catch(e){}
-  const statusEl = document.getElementById('cfg-status');
-  statusEl.textContent = 'Abriendo ventana de inicio de sesión de Microsoft...';
-  try{
-    const token = await getSpToken();
-    if(token){
-      document.getElementById('config-banner').classList.add('hidden');
-      statusEl.textContent = '';
-      toast('✓ Sesión iniciada · sincronizando...');
-      syncNow();
-    } else {
-      statusEl.textContent = '⚠ No se pudo iniciar sesión. Intenta de nuevo.';
-    }
-  }catch(e){
-    statusEl.textContent = '⚠ Error al autenticar: ' + (e.message||'intenta de nuevo');
-  }
+  document.getElementById('config-banner').classList.add('hidden');
+  toast('✓ Configuración guardada');
+  syncNow();
 }
 
 function dismissConfig(){
   document.getElementById('config-banner').classList.add('hidden');
-  toast('Usando modo local. Puedes importar CSV cuando quieras.');
-}
-
-async function getSpToken(){
-  if(spToken&&Date.now()<spTokenExp-60000) return spToken;
-  if(!cfg.tenant||!cfg.client) return null;
-  try{
-    const params=new URLSearchParams({
-      client_id:cfg.client,
-      scope:'https://graph.microsoft.com/.default',
-      grant_type:'client_credentials',
-    });
-    const r=await fetch(`https://login.microsoftonline.com/${cfg.tenant}/oauth2/v2.0/token`,{
-      method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:params
-    });
-    if(!r.ok) return null;
-    const d=await r.json();
-    spToken=d.access_token; spTokenExp=Date.now()+(d.expires_in*1000);
-    return spToken;
-  }catch(e){return null;}
-}
-
-async function syncNow(){
-  if(!cfg.site){
-    toast('⚠ Configura SharePoint primero');
-    openConfigBanner();
-    return;
-  }
-  setSyncStatus('syncing','Sincronizando...');
-  try{
-    const token=await getSpToken();
-    if(!token){setSyncStatus('error','Error de autenticación');toast('⚠ No se pudo autenticar. Haz clic en "Conexión" para iniciar sesión.');return;}
-    const siteUrl=cfg.site.replace('https://','').split('/');
-    const host=siteUrl[0], sitePath='/'+siteUrl.slice(1).join('/');
-    const siteR=await fetch(`https://graph.microsoft.com/v1.0/sites/${host}:${sitePath}`,{
-      headers:{Authorization:'Bearer '+token}
-    });
-    if(!siteR.ok){setSyncStatus('error','Sitio no encontrado');toast('⚠ Verifica la URL del sitio SharePoint');return;}
-    const site=await siteR.json();
-    const listName=cfg.listname||'ProyectosCID';
-    const listR=await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists?$filter=displayName eq '${encodeURIComponent(listName)}'`,{
-      headers:{Authorization:'Bearer '+token}
-    });
-    const listData=await listR.json();
-    if(!listData.value||!listData.value.length){
-      setSyncStatus('error',`Lista "${listName}" no encontrada`);
-      toast(`⚠ Crea la lista "${listName}" en SharePoint primero`);
-      return;
-    }
-    const listId=listData.value[0].id;
-    const itemsR=await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists/${listId}/items?expand=fields&$top=500`,{
-      headers:{Authorization:'Bearer '+token}
-    });
-    const itemsData=await itemsR.json();
-    const spItems=itemsData.value||[];
-    projects=spItems.map(item=>{
-      const f=item.fields;
-      const fases=f.Fases?f.Fases.split('|').map(s=>{
-        const m=s.match(/^(.+?):(.+)$/);
-        return m?{name:m[1].trim(),estado:m[2].trim()}:{name:s.trim(),estado:'Sin Iniciar'};
-      }):[];
-      return{
-        id:item.id,_spId:item.id,
-        nombre:f.Title||'',estado:f.Estado||'Sin Iniciar',
-        prioridad:f.Prioridad||'',equipo:f.Equipo||'',
-        responsable:f.Responsable||'',avance:parseInt(f.Avance)||0,
-        fechaInicio:f.FechaInicio||'',fechaFin:f.FechaFin||'',subtasks:fases,
-      };
-    });
-    persist();render();
-    setSyncStatus('ok','Sincronizado · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}));
-    toast('✓ Sincronizado con SharePoint');
-  }catch(e){
-    setSyncStatus('error','Error de sincronización');
-    toast('⚠ Error al conectar con SharePoint');
-    console.error(e);
-  }
-}
-
-async function pushToSP(project){
-  if(!cfg.site) return;
-  try{
-    const token=await getSpToken(); if(!token) return;
-    const siteUrl=cfg.site.replace('https://','').split('/');
-    const host=siteUrl[0], sitePath='/'+siteUrl.slice(1).join('/');
-    const siteR=await fetch(`https://graph.microsoft.com/v1.0/sites/${host}:${sitePath}`,{headers:{Authorization:'Bearer '+token}});
-    const site=await siteR.json();
-    const listName=cfg.listname||'ProyectosCID';
-    const listR=await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists?$filter=displayName eq '${encodeURIComponent(listName)}'`,{headers:{Authorization:'Bearer '+token}});
-    const listData=await listR.json();
-    if(!listData.value||!listData.value.length) return;
-    const listId=listData.value[0].id;
-    const fields={
-      Title:project.nombre, Estado:project.estado, Prioridad:project.prioridad,
-      Equipo:project.equipo, Responsable:project.responsable, Avance:project.avance,
-      FechaInicio:project.fechaInicio, FechaFin:project.fechaFin,
-      Fases:(project.subtasks||[]).map(s=>s.name+':'+s.estado).join('|')
-    };
-    if(project._spId){
-      await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists/${listId}/items/${project._spId}/fields`,{
-        method:'PATCH',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(fields)
-      });
-    } else {
-      const r=await fetch(`https://graph.microsoft.com/v1.0/sites/${site.id}/lists/${listId}/items`,{
-        method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},
-        body:JSON.stringify({fields})
-      });
-      const d=await r.json();
-      project._spId=d.id;
-    }
-  }catch(e){}
+  toast('Usando modo local. Puedes sincronizar cuando quieras.');
 }
 
 function setSyncStatus(state,msg){
@@ -911,8 +805,8 @@ async function saveProject(){
   const subRaw=document.getElementById('f-subtasks').value;
   const subtasks=subRaw?subRaw.split(',').map(s=>{s=s.trim();const m=s.match(/^(.+?)\s*\[(.+?)\]$/);return m?{name:m[1].trim(),estado:m[2].trim()}:{name:s,estado:'Sin Iniciar'};}).filter(s=>s.name):[];
   const data={nombre,tipo:document.getElementById('f-tipo').value,estado:document.getElementById('f-estado').value,prioridad:document.getElementById('f-prio').value,equipo:document.getElementById('f-equipo-m').value,responsable:document.getElementById('f-resp').value,avance:Math.min(100,Math.max(0,parseInt(document.getElementById('f-prog').value)||0)),fechaInicio:'',fechaFin,subtasks};
-  if(editingId){const idx=projects.findIndex(p=>p.id===editingId);projects[idx]={...projects[idx],...data};if(cfg.site)pushToSP(projects[idx]);}
-  else{data.id=Date.now();projects.push(data);if(cfg.site)pushToSP(data);}
+  if(editingId){const idx=projects.findIndex(p=>p.id===editingId);projects[idx]={...projects[idx],...data};if(cfg.ghtoken)pushToGH();}
+  else{data.id=Date.now();projects.push(data);if(cfg.ghtoken)pushToGH();}
   persist();closeModal();render();
   toast(editingId?'✓ Proyecto actualizado':'✓ Proyecto creado');
 }
