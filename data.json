@@ -1305,16 +1305,8 @@
     "fechaFin": "",
     "subtasks": [
       {
-        "name": "[Estado]",
-        "estado": "Sin Iniciar"
-      },
-      {
-        "name": "[Estado2",
-        "estado": "Sin Iniciar"
-      },
-      {
-        "name": "[Estado3]",
-        "estado": "Sin Iniciar"
+        "name": "hola",
+        "estado": "en progreso"
       }
     ],
     "id": 1775662496639
