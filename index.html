@@ -197,8 +197,18 @@ td{padding:9px 12px;vertical-align:middle}
 .b-fr{background:var(--amber-l);color:var(--amber)}
 .b-multi{background:var(--gray-l);color:var(--gray)}
 
-/* PROGRESS */
-.prog-inline{display:flex;align-items:center;gap:8px}
+/* FASE ITEM */
+.fase-item{display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:7px}
+.fase-name{flex:1;font-size:12px;color:var(--text)}
+.fase-estado-btn{padding:2px 8px;border-radius:12px;font-size:10px;font-weight:500;cursor:pointer;border:none;font-family:var(--font);transition:var(--tr)}
+.fase-del{width:18px;height:18px;border-radius:4px;background:transparent;border:none;cursor:pointer;color:var(--text3);font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fase-del:hover{color:var(--red);background:var(--red-l)}
+/* RESP TAG */
+.resp-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--accent-l);color:var(--accent);border-radius:12px;font-size:11px}
+.resp-tag button{background:none;border:none;cursor:pointer;color:var(--accent);font-size:12px;padding:0;line-height:1}
+/* PIPELINE CLICKEABLE */
+.wf-node.clickable{cursor:pointer}
+.wf-node.clickable:hover{opacity:.8;transform:scale(1.03)}
 .prog-bar-sm{width:60px;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;flex-shrink:0}
 .prog-fill{height:100%;border-radius:3px}
 .prog-pct{font-size:10px;color:var(--text2);font-family:var(--mono)}
@@ -253,13 +263,32 @@ td{padding:9px 12px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .empty-state{text-align:center;padding:3rem;color:var(--text3);font-size:13px}
+.empty-state-icon{font-size:32px;margin-bottom:.5rem}
+.empty-state-action{margin-top:.75rem;font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline}
+
+/* ATRASADO */
+.late-badge{display:inline-flex;align-items:center;gap:3px;padding:1px 5px;border-radius:8px;font-size:9px;font-weight:600;background:var(--red-l);color:var(--red);margin-left:4px;vertical-align:middle}
+/* METRIC DESTACADA */
+.metric.featured{border-color:var(--accent);background:linear-gradient(135deg,var(--accent-l),var(--surface))}
+.metric.featured .m-val{font-size:26px}
+/* FILTROS TOGGLE MÓVIL */
+.filters-toggle{display:none;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;color:var(--text2);font-family:var(--font)}
+.filters-extra{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
 @media(max-width:700px){
   .body{padding:.75rem}
   .charts-row{grid-template-columns:1fr}
-  .hdr{padding:.6rem 1rem}
+  .hdr{padding:.6rem .75rem;gap:8px}
+  .hdr-title{font-size:12px}
+  .hdr-right{gap:4px}
+  .hdr-right .btn-label{display:none}
   .frow{grid-template-columns:1fr}
   .cb-fields{grid-template-columns:1fr}
+  .filters-toggle{display:flex;align-items:center;gap:5px}
+  .filters-extra{display:none;width:100%}
+  .filters-extra.open{display:flex}
+  .td-name{max-width:130px!important}
+  .metrics-grid{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 </head>
@@ -277,17 +306,17 @@ td{padding:9px 12px;vertical-align:middle}
   <div class="hdr-right">
     <button class="btn-icon" onclick="syncNow()" id="sync-btn" title="Sincronizar con GitHub">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-      Sincronizar
+      <span class="btn-label">Sincronizar</span>
     </button>
     <button class="btn-icon" onclick="openConfigBanner()" title="Configurar conexión GitHub">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Conexión
+      <span class="btn-label">Conexión</span>
     </button>
     <button class="btn-icon" onclick="openReport()" title="Generar reporte">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Reporte
+      <span class="btn-label">Reporte</span>
     </button>
-    <button class="btn-icon" onclick="exportCSV()">↓ CSV</button>
+    <button class="btn-icon" onclick="exportCSV()" title="Exportar CSV">↓ <span class="btn-label">CSV</span></button>
     <button class="btn-icon" onclick="toggleTheme()" id="theme-btn">🌙</button>
     <input type="file" id="csv-file" accept=".csv" style="display:none" onchange="importCSV(event)">
   </div>
@@ -323,29 +352,37 @@ td{padding:9px 12px;vertical-align:middle}
   <div class="controls">
     <div class="search-wrap">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input class="search" type="text" id="search" placeholder="Buscar proyecto o responsable... ( / )" oninput="applyFilters()">
+      <input class="search" type="text" id="search" placeholder="Buscar proyecto, responsable, equipo... ( / )" oninput="applyFilters()">
     </div>
-    <select class="fil" id="fil-equipo" onchange="applyFilters()">
-      <option value="">Todos los equipos</option>
-      <option>Mi-Books</option><option>CREA</option><option>Diseño</option>
-      <option>Johnas</option><option>Freelance</option>
-    </select>
-    <select class="fil" id="fil-prio" onchange="applyFilters()">
-      <option value="">Toda prioridad</option>
-      <option value="High">Alta</option><option value="Medium">Media</option><option value="Low">Baja</option>
-    </select>
-    <select class="fil" id="fil-tipo" onchange="applyFilters()">
-      <option value="">Todos los tipos</option>
-      <option value="Proyecto">Proyectos</option>
-      <option value="Otros">Otros productos</option>
-    </select>
-    <select class="fil" id="fil-sort" onchange="applyFilters()">
-      <option value="">Orden original</option>
-      <option value="avance-desc">Mayor avance</option>
-      <option value="avance-asc">Menor avance</option>
-      <option value="nombre">Nombre A–Z</option>
-      <option value="fecha">Fecha límite</option>
-    </select>
+    <button class="filters-toggle" onclick="toggleFilters()" id="filters-toggle-btn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      Filtros
+    </button>
+    <div class="filters-extra" id="filters-extra">
+      <select class="fil" id="fil-equipo" onchange="applyFilters()">
+        <option value="">Todos los equipos</option>
+        <option>Mi-Books</option><option>CREA</option><option>Diseño</option>
+        <option>Johnas</option><option>Freelance</option>
+      </select>
+      <select class="fil" id="fil-prio" onchange="applyFilters()">
+        <option value="">Toda prioridad</option>
+        <option value="High">Alta</option><option value="Medium">Media</option><option value="Low">Baja</option>
+      </select>
+      <select class="fil" id="fil-tipo" onchange="applyFilters()">
+        <option value="">Todos los tipos</option>
+        <option value="Proyecto">Proyectos</option>
+        <option value="Otros">Otros productos</option>
+      </select>
+      <select class="fil" id="fil-sort" onchange="applyFilters()">
+        <option value="">Orden original</option>
+        <option value="avance-desc">Mayor avance</option>
+        <option value="avance-asc">Menor avance</option>
+        <option value="nombre">Nombre A–Z</option>
+        <option value="fecha">Fecha límite</option>
+        <option value="atrasados">Atrasados primero</option>
+      </select>
+      <button class="btn-icon" style="font-size:11px;color:var(--text3)" onclick="clearFilters()" title="Limpiar filtros">✕ Limpiar</button>
+    </div>
     <button class="btn-icon primary" onclick="openModal()">+ Nuevo proyecto</button>
     <div class="view-tabs">
       <button class="view-tab active" onclick="setView('table',this)">≡ Tabla</button>
@@ -376,19 +413,32 @@ td{padding:9px 12px;vertical-align:middle}
     <div class="fg"><label>Equipo</label>
       <select id="f-equipo-m"><option>Mi-Books</option><option>CREA</option><option>Diseño</option><option>Johnas</option><option>Freelance</option><option value="">Sin equipo</option></select>
     </div>
-    <div class="fg"><label>Responsable(s)</label><input type="text" id="f-resp" placeholder="Ej: Nancy Vargas"></div>
+    <div class="fg">
+      <label>Responsable(s)</label>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="f-resp" list="resp-list" placeholder="Selecciona o escribe" style="flex:1" autocomplete="off">
+        <datalist id="resp-list"></datalist>
+        <button type="button" class="btn-ghost" style="padding:6px 10px;font-size:11px;flex-shrink:0" onclick="addResponsable()" title="Agregar responsable a la lista">+ Agregar</button>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px" id="resp-tags"></div>
+      <div class="fg-hint">Selecciona de la lista o escribe un nombre nuevo y clic en + Agregar</div>
+    </div>
   </div>
   <div class="frow">
-    <div class="fg"><label>Avance (%)</label><input type="number" id="f-prog" min="0" max="100" value="0"></div>
+    <div class="fg" id="fg-prog" style="display:none"><label>Avance (%)</label><input type="number" id="f-prog" min="0" max="100" value="0"></div>
     <div class="fg"><label>Fecha límite</label><input type="date" id="f-fecha"></div>
   </div>
   <div class="fg"><label>Tipo</label>
       <select id="f-tipo"><option value="Proyecto">Proyecto</option><option value="Otros">Otros (producto/recurso)</option></select>
     </div>
-    <div class="fg">
+  <div class="fg">
     <label>Fases del proyecto</label>
-    <input type="text" id="f-subtasks" placeholder="Diseño, Edición [En progreso], Revisión, Publicación">
-    <div class="fg-hint">Separar con coma · Agrega [Estado] para marcar: Terminado, En progreso, Pausado</div>
+    <div style="display:flex;gap:6px;margin-bottom:6px">
+      <input type="text" id="f-subtask-new" placeholder="Nueva fase..." style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addFase()}">
+      <button type="button" class="btn-ghost" style="padding:6px 10px;font-size:11px;flex-shrink:0" onclick="addFase()">+ Fase</button>
+    </div>
+    <div id="f-fases-list" style="display:flex;flex-direction:column;gap:4px"></div>
+    <div class="fg-hint">Clic en el estado de cada fase para cambiarlo · arrastra para reordenar</div>
   </div>
   <div class="modal-foot" id="modal-foot"></div>
 </div>
@@ -476,10 +526,11 @@ async function syncNow(){
 
 async function pushToGH(){
   if(!cfg.ghtoken || !cfg.ghuser || !cfg.ghrepo) return;
+  setSyncStatus('syncing','Guardando...');
   try{
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(projects, null, 2))));
     const body = {
-      message: 'Update dashboard data',
+      message: 'Update dashboard data · ' + new Date().toISOString(),
       content,
       ...(ghFileSha ? {sha: ghFileSha} : {})
     };
@@ -487,8 +538,14 @@ async function pushToGH(){
     if(res.ok){
       const data = await res.json();
       ghFileSha = data.content.sha;
+      setSyncStatus('ok','Guardado en GitHub · '+new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}));
+    } else {
+      setSyncStatus('error','Error al guardar');
     }
-  }catch(e){ console.error('pushToGH error:', e); }
+  }catch(e){
+    setSyncStatus('error','Error al guardar');
+    console.error('pushToGH error:', e);
+  }
 }
 
 // ─── INIT ────────────────────────────────────────────────
@@ -564,6 +621,13 @@ const inits=n=>n?n.split(/[\s,]+/).filter(Boolean).map(w=>w[0]).join('').toUpper
 function fmtD(d){if(!d)return'—';if(d.includes('/'))return d.split('/')[1]+'/'+d.split('/')[0]+'/'+d.split('/')[2].slice(2);if(d.includes('-'))return d.split('-')[2]+'/'+d.split('-')[1]+'/'+d.split('-')[0].slice(2);return d;}
 function effAv(p){if(p.subtasks&&p.subtasks.length)return Math.round(p.subtasks.filter(s=>s.estado==='Terminado').length/p.subtasks.length*100);return p.avance;}
 function wfCl(e){return{'Terminado':'done','En progreso':'active','Pausado':'paused','En correcciones':'corrections','Sin Iniciar':'pending'}[e]||'pending';}
+function isLate(p){
+  if(!p.fechaFin || p.estado==='Terminado') return false;
+  const parts = p.fechaFin.split('/');
+  if(parts.length < 3) return false;
+  return new Date(parts[2], parts[0]-1, parts[1]) < new Date();
+}
+
 function getFiltered(){
   const q=document.getElementById('search').value.toLowerCase();
   const eq=document.getElementById('fil-equipo').value;
@@ -572,7 +636,7 @@ function getFiltered(){
   const tp=document.getElementById('fil-tipo').value;
   let d=projects.filter(p=>{
     if(currentTab!=='todos'&&p.estado!==currentTab)return false;
-    if(q&&!p.nombre.toLowerCase().includes(q)&&!p.responsable.toLowerCase().includes(q))return false;
+    if(q&&!p.nombre.toLowerCase().includes(q)&&!p.responsable.toLowerCase().includes(q)&&!p.equipo.toLowerCase().includes(q)&&!p.estado.toLowerCase().includes(q))return false;
     if(eq&&!p.equipo.includes(eq))return false;
     if(pr&&p.prioridad!==pr)return false;
     if(tp&&p.tipo!==tp)return false;
@@ -582,6 +646,7 @@ function getFiltered(){
   else if(so==='avance-asc')d.sort((a,b)=>effAv(a)-effAv(b));
   else if(so==='nombre')d.sort((a,b)=>a.nombre.localeCompare(b.nombre));
   else if(so==='fecha')d.sort((a,b)=>{if(!a.fechaFin&&!b.fechaFin)return 0;if(!a.fechaFin)return 1;if(!b.fechaFin)return -1;return a.fechaFin.localeCompare(b.fechaFin);});
+  else if(so==='atrasados')d.sort((a,b)=>isLate(b)?1:isLate(a)?-1:0);
   return d;
 }
 
@@ -598,15 +663,30 @@ function renderMetrics(){
   const pa = p.filter(x => x.estado === 'Pausado').length;
   const co = p.filter(x => x.estado === 'En correcciones').length;
   const av = Math.round(p.map(effAv).reduce((a,b) => a+b, 0) / n);
-  document.getElementById('metrics').innerHTML = [
-    [p.length, 'Proyectos', 'var(--accent)', otros + ' otros productos'],
-    [pr, 'En progreso', 'var(--accent)', Math.round(pr/n*100) + '%'],
-    [te, 'Terminados', 'var(--green)', Math.round(te/n*100) + '%'],
-    [si, 'Sin iniciar', 'var(--text2)', ''],
-    [pa, 'Pausados', 'var(--amber)', ''],
-    [co, 'Correcciones', 'var(--red)', ''],
-    [av + '%', 'Avance prom.', PC2(av), p.filter(x => effAv(x) === 100).length + ' al 100%'],
-  ].map(([v,l,c,t]) => '<div class="metric"><div class="m-val" style="color:' + c + '">' + v + '</div><div class="m-lbl">' + l + '</div>' + (t ? '<div class="m-trend">' + t + '</div>' : '') + '</div>').join('');
+  const today = new Date();
+  const late = p.filter(x => {
+    if(!x.fechaFin || x.estado === 'Terminado') return false;
+    const parts = x.fechaFin.split('/');
+    if(parts.length < 3) return false;
+    return new Date(parts[2], parts[0]-1, parts[1]) < today;
+  }).length;
+  const metrics = [
+    {v:p.length, l:'Proyectos', c:'var(--accent)', t:otros+' otros productos', featured:false},
+    {v:pr, l:'En progreso', c:'var(--accent)', t:Math.round(pr/n*100)+'%', featured:true},
+    {v:av+'%', l:'Avance prom.', c:av>=70?'var(--green)':av>=40?'var(--amber)':'var(--text2)', t:p.filter(x=>effAv(x)===100).length+' al 100%', featured:true},
+    {v:te, l:'Terminados', c:'var(--green)', t:Math.round(te/n*100)+'%', featured:false},
+    {v:si, l:'Sin iniciar', c:'var(--text2)', t:'', featured:false},
+    {v:pa, l:'Pausados', c:'var(--amber)', t:'', featured:false},
+    {v:co, l:'Correcciones', c:'var(--red)', t:'', featured:false},
+    ...(late > 0 ? [{v:late, l:'Atrasados', c:'var(--red)', t:'clic para ver', featured:false, action:"setTab('todos');document.getElementById('fil-sort').value='atrasados';applyFilters()"}] : []),
+  ];
+  document.getElementById('metrics').innerHTML = metrics.map(({v,l,c,t,featured,action}) =>
+    `<div class="metric${featured?' featured':''}"${action?` onclick="${action}" style="cursor:pointer"`:''}>
+      <div class="m-val" style="color:${c}">${v}</div>
+      <div class="m-lbl">${l}</div>
+      ${t ? `<div class="m-trend">${t}</div>` : ''}
+    </div>`
+  ).join('');
 }
 
 function renderCharts(){
@@ -620,7 +700,7 @@ function renderCharts(){
   const mx=Math.max(1,...td.map(t=>t.total));
   const estats=[{l:'En progreso',n:allP.filter(p=>p.estado==='En progreso').length,c:'var(--accent)'},{l:'Terminado',n:allP.filter(p=>p.estado==='Terminado').length,c:'var(--green)'},{l:'Sin Iniciar',n:allP.filter(p=>p.estado==='Sin Iniciar').length,c:'var(--text3)'},{l:'Pausado',n:allP.filter(p=>p.estado==='Pausado').length,c:'var(--amber)'},{l:'Correcciones',n:allP.filter(p=>p.estado==='En correcciones').length,c:'var(--red)'}].filter(e=>e.n>0);
   const tot=allP.length||1;
-  let off=0; const r=42,cx=54,cy=54,ci=2*Math.PI*r;
+  let off=0; const r=56,cx=70,cy=70,ci=2*Math.PI*r;
   const segs=estats.map(e=>{const len=ci*e.n/tot;const s={...e,off,len};off+=len;return s;});
   document.getElementById('charts').innerHTML=`
     <div class="card">
@@ -634,14 +714,14 @@ function renderCharts(){
     <div class="card">
       <div class="card-title">Distribución por estado</div>
       <div class="donut-wrap">
-        <svg width="108" height="108" viewBox="0 0 108 108" flex-shrink="0">
-          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--border)" stroke-width="12"/>
-          ${segs.map(s=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.c}" stroke-width="12"
+        <svg width="140" height="140" viewBox="0 0 140 140" style="flex-shrink:0">
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--border)" stroke-width="14"/>
+          ${segs.map(s=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.c}" stroke-width="14"
             stroke-dasharray="${s.len} ${ci-s.len}" stroke-dashoffset="${-s.off}" transform="rotate(-90 ${cx} ${cy})"/>`).join('')}
-          <text x="${cx}" y="${cy-5}" text-anchor="middle" font-size="18" font-weight="600" fill="var(--text)">${tot}</text>
-          <text x="${cx}" y="${cy+10}" text-anchor="middle" font-size="9" fill="var(--text2)">proyectos</text>
+          <text x="${cx}" y="${cy-6}" text-anchor="middle" font-size="22" font-weight="600" fill="var(--text)">${tot}</text>
+          <text x="${cx}" y="${cy+12}" text-anchor="middle" font-size="10" fill="var(--text2)">proyectos</text>
         </svg>
-        <div class="donut-legend">${estats.map(e=>`<div class="legend-item"><div class="legend-dot" style="background:${e.c}"></div><span class="legend-text">${e.l}</span><span class="legend-pct">${e.n} · ${Math.round(e.n/tot*100)}%</span></div>`).join('')}</div>
+        <div class="donut-legend" style="flex:1">${estats.map(e=>`<div class="legend-item"><div class="legend-dot" style="background:${e.c}"></div><span class="legend-text">${e.l}</span><span class="legend-pct">${e.n} · ${Math.round(e.n/tot*100)}%</span></div>`).join('')}</div>
       </div>
     </div>`;
 }
@@ -677,18 +757,18 @@ function renderTable(data){
     const si = hs ? p.subtasks.filter(s => s.estado === 'Terminado').length + '/' + p.subtasks.length : '';
     let rows = '<tr class="' + (ie ? 'open' : '') + '" onclick="toggleExpand(' + p.id + ')">'
       + '<td><div class="exp-btn ' + (hs ? (ie ? 'open' : '') : '') + '" style="' + (hs ? '' : 'opacity:.2;cursor:default') + '" onclick="event.stopPropagation();' + (hs ? 'toggleExpand(' + p.id + ')' : '') + '">▶</div></td>'
-      + '<td class="td-name" title="' + p.nombre + '">' + p.nombre + '</td>'
+      + '<td class="td-name" title="' + p.nombre + '">' + p.nombre + (isLate(p) ? '<span class="late-badge">⚠ atrasado</span>' : '') + '</td>'
       + '<td><span class="badge ' + sc[0] + '">' + sc[1] + '</span></td>'
       + '<td>' + (pc ? '<span class="badge ' + pc[0] + '">' + pc[1] + '</span>' : '<span style="color:var(--text3)">—</span>') + '</td>'
-      + '<td>' + (p.equipo ? '<span class="badge ' + tc + '" style="font-size:10px;max-width:110px;overflow:hidden;text-overflow:ellipsis;display:inline-block">' + p.equipo + '</span>' : '—') + '</td>'
+      + '<td>' + (p.equipo ? '<span class="badge ' + tc + '" style="font-size:10px" title="' + p.equipo + '">' + p.equipo + '</span>' : '—') + '</td>'
       + '<td><div style="display:flex;align-items:center;gap:5px">' + (p.responsable ? '<div class="av" style="' + avSt(p.responsable) + '">' + inits(p.responsable) + '</div>' : '') + '<span style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px">' + (p.responsable || '<span style="color:var(--text3)">—</span>') + '</span></div></td>'
-      + '<td><div class="prog-inline"><div class="prog-bar-sm"><div class="prog-fill" style="width:' + av + '%;background:' + PC2(av) + '"></div></div><span class="prog-pct">' + av + '%' + (si ? ' (' + si + ')' : '') + '</span></div></td>'
-      + '<td style="font-size:11px;color:var(--text2);font-family:var(--mono)">' + fmtD(p.fechaFin) + '</td>'
+      + '<td><div class="prog-inline"><div class="prog-bar-sm"><div class="prog-fill" style="width:' + av + '%;background:' + (av===100?'var(--green)':av>0?'var(--accent)':'var(--border2)') + '"></div></div><span class="prog-pct" style="color:' + (av===100?'var(--green)':av>0?'var(--text2)':'var(--text3)') + '">' + av + '%' + (si ? ' (' + si + ')' : '') + '</span></div></td>'
+      + '<td style="font-size:11px;color:' + (isLate(p)?'var(--red)':'var(--text2)') + ';font-family:var(--mono)">' + fmtD(p.fechaFin) + '</td>'
       + '<td onclick="event.stopPropagation()"><div style="display:flex;gap:3px"><button class="exp-btn" style="width:24px;height:24px;font-size:12px" onclick="openModal(' + p.id + ')">✎</button><button class="exp-btn" style="width:24px;height:24px;font-size:11px" onclick="delProject(' + p.id + ')">✕</button></div></td>'
       + '</tr>';
     if(hs) {
-      rows += '<tr class="pipe-row ' + (ie ? 'open' : '') + '"><td colspan="9"><div class="pipe-inner"><div class="pipe-lbl">Pipeline · ' + p.subtasks.filter(s => s.estado === 'Terminado').length + ' de ' + p.subtasks.length + ' completadas</div><div class="wf-steps">'
-        + p.subtasks.map((s,i) => '<div class="wf-step">' + (i > 0 ? '<span class="wf-arrow">›</span>' : '') + '<div class="wf-node ' + wfCl(s.estado) + '">' + (s.estado === 'Terminado' ? '✓' : s.estado === 'En progreso' ? '●' : s.estado === 'Pausado' ? '⏸' : '○') + ' ' + s.name + '</div></div>').join('')
+      rows += '<tr class="pipe-row ' + (ie ? 'open' : '') + '"><td colspan="9"><div class="pipe-inner"><div class="pipe-lbl">Pipeline · ' + p.subtasks.filter(s => s.estado === 'Terminado').length + ' de ' + p.subtasks.length + ' completadas · <span style="color:var(--text3)">clic en una fase para avanzar su estado</span></div><div class="wf-steps">'
+        + p.subtasks.map((s,si) => '<div class="wf-step">' + (si > 0 ? '<span class="wf-arrow">›</span>' : '') + '<div class="wf-node clickable ' + wfCl(s.estado) + '" onclick="event.stopPropagation();toggleFase(' + p.id + ',' + si + ')" title="Estado: ' + s.estado + ' · Clic para avanzar">' + (s.estado === 'Terminado' ? '✓' : s.estado === 'En progreso' ? '●' : s.estado === 'Pausado' ? '⏸' : s.estado === 'En correcciones' ? '⚠' : '○') + ' ' + s.name + '</div></div>').join('')
         + '</div></div></td></tr>';
     }
     return rows;
@@ -707,7 +787,12 @@ function renderTable(data){
     + '</tr></thead><tbody>';
 
   if(!sl.length) {
-    h += '<tr><td colspan="9" class="empty-state">No se encontraron proyectos</td></tr>';
+    const hasFilters = document.getElementById('search').value || document.getElementById('fil-equipo').value || document.getElementById('fil-prio').value || document.getElementById('fil-tipo').value;
+    h += `<tr><td colspan="9"><div class="empty-state">
+      <div class="empty-state-icon">${hasFilters ? '🔍' : '📋'}</div>
+      <div>${hasFilters ? 'No hay proyectos con estos filtros' : 'No hay proyectos aún'}</div>
+      ${hasFilters ? '<div class="empty-state-action" onclick="clearFilters()">Limpiar filtros</div>' : '<div class="empty-state-action" onclick="openModal()">+ Crear primer proyecto</div>'}
+    </div></td></tr>`;
   } else {
     sl.forEach(p => { h += mkRow(p); });
   }
@@ -765,31 +850,175 @@ function setView(v,el){currentView=v;currentPage=1;document.querySelectorAll('.v
 function applyFilters(){currentPage=1;renderView();renderStabs();}
 function chPage(n){const tp=Math.max(1,Math.ceil(getFiltered().length/PAGE));if(n<1||n>tp)return;currentPage=n;renderView();}
 function toggleExpand(id){expandedIds.has(id)?expandedIds.delete(id):expandedIds.add(id);renderView();}
+function toggleFilters(){const el=document.getElementById('filters-extra');el.classList.toggle('open');document.getElementById('filters-toggle-btn').style.color=el.classList.contains('open')?'var(--accent)':'var(--text2)';}
+function clearFilters(){document.getElementById('search').value='';document.getElementById('fil-equipo').value='';document.getElementById('fil-prio').value='';document.getElementById('fil-tipo').value='';document.getElementById('fil-sort').value='';applyFilters();}
+
+async function toggleFase(projectId, faseIdx){
+  const p = projects.find(x=>x.id===projectId);
+  if(!p||!p.subtasks[faseIdx]) return;
+  const estados = ['Sin Iniciar','En progreso','En correcciones','Pausado','Terminado'];
+  const curr = p.subtasks[faseIdx].estado;
+  const next = estados[(estados.indexOf(curr)+1) % estados.length];
+  p.subtasks[faseIdx].estado = next;
+  // Recalcular avance automáticamente
+  p.avance = Math.round(p.subtasks.filter(s=>s.estado==='Terminado').length/p.subtasks.length*100);
+  // Actualizar estado del proyecto si todas terminaron
+  if(p.avance===100 && p.estado!=='Terminado') p.estado='Terminado';
+  else if(p.avance>0 && p.avance<100 && p.estado==='Sin Iniciar') p.estado='En progreso';
+  persist();
+  if(cfg.ghtoken) pushToGH();
+  render();
+  toast(`✓ ${p.subtasks[faseIdx].name} → ${next}`);
+}
+
+// ─── RESPONSABLES ────────────────────────────────────────
+function getResponsables(){
+  const set = new Set();
+  projects.forEach(p => {
+    if(p.responsable) p.responsable.split(',').forEach(r => { const t=r.trim(); if(t) set.add(t); });
+  });
+  return [...set].sort();
+}
+
+function refreshRespDatalist(){
+  const dl = document.getElementById('resp-list');
+  if(!dl) return;
+  dl.innerHTML = getResponsables().map(r=>`<option value="${r}">`).join('');
+}
+
+let modalResponsables = [];
+
+function addResponsable(){
+  const input = document.getElementById('f-resp');
+  const val = input.value.trim();
+  if(!val) return;
+  if(!modalResponsables.includes(val)) modalResponsables.push(val);
+  input.value = '';
+  renderRespTags();
+}
+
+function removeResponsable(name){
+  modalResponsables = modalResponsables.filter(r => r !== name);
+  renderRespTags();
+}
+
+function renderRespTags(){
+  const el = document.getElementById('resp-tags');
+  if(!el) return;
+  el.innerHTML = modalResponsables.map(r =>
+    `<span class="resp-tag">${r}<button onclick="removeResponsable('${r.replace(/'/g,"\\'")}')">×</button></span>`
+  ).join('');
+}
+
+// ─── FASES INTERACTIVAS ──────────────────────────────────
+let modalFases = [];
+const FASE_ESTADOS = ['Sin Iniciar','En progreso','En correcciones','Pausado','Terminado'];
+const FASE_COLORS = {
+  'Sin Iniciar':'background:var(--gray-l);color:var(--gray)',
+  'En progreso':'background:var(--accent-l);color:var(--accent)',
+  'Terminado':'background:var(--green-l);color:var(--green)',
+  'Pausado':'background:var(--amber-l);color:var(--amber)',
+  'En correcciones':'background:var(--red-l);color:var(--red)'
+};
+
+function addFase(){
+  const input = document.getElementById('f-subtask-new');
+  const val = input.value.trim();
+  if(!val) return;
+  modalFases.push({name:val, estado:'Sin Iniciar'});
+  input.value = '';
+  renderFasesList();
+}
+
+function cycleFaseEstado(idx){
+  const current = modalFases[idx].estado;
+  const i = FASE_ESTADOS.indexOf(current);
+  modalFases[idx].estado = FASE_ESTADOS[(i+1) % FASE_ESTADOS.length];
+  renderFasesList();
+  updateProgFromFases();
+}
+
+function removeFase(idx){
+  modalFases.splice(idx, 1);
+  renderFasesList();
+  updateProgFromFases();
+}
+
+function updateProgFromFases(){
+  if(!modalFases.length) {
+    document.getElementById('fg-prog').style.display = '';
+    return;
+  }
+  document.getElementById('fg-prog').style.display = 'none';
+  const done = modalFases.filter(f=>f.estado==='Terminado').length;
+  const pct = Math.round(done/modalFases.length*100);
+  document.getElementById('f-prog').value = pct;
+  // Actualizar indicador visual
+  const ind = document.getElementById('fases-progress-indicator');
+  if(ind) ind.innerHTML = `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;padding:6px 8px;background:var(--surface2);border-radius:7px;border:1px solid var(--border)">
+    <div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${pct===100?'var(--green)':'var(--accent)'};border-radius:3px;transition:width .3s"></div></div>
+    <span style="font-size:11px;font-family:var(--mono);color:${pct===100?'var(--green)':'var(--text2)';font-weight:${pct===100?'600':'400'}">${done}/${modalFases.length} · ${pct}%</span>
+  </div>`;
+}
+
+function renderFasesList(){
+  const el = document.getElementById('f-fases-list');
+  if(!el) return;
+  if(!modalFases.length){
+    el.innerHTML = '<div style="font-size:11px;color:var(--text3);padding:4px 0">Sin fases definidas — el avance se ingresa manualmente</div>';
+    document.getElementById('fg-prog').style.display = '';
+    return;
+  }
+  el.innerHTML = `<div id="fases-progress-indicator"></div>` + modalFases.map((f,i) =>
+    `<div class="fase-item">
+      <span class="fase-name">${f.name}</span>
+      <button class="fase-estado-btn" style="${FASE_COLORS[f.estado]||FASE_COLORS['Sin Iniciar']}" onclick="cycleFaseEstado(${i})" title="Clic para cambiar estado">${f.estado}</button>
+      <button class="fase-del" onclick="removeFase(${i})" title="Eliminar fase">×</button>
+    </div>`
+  ).join('');
+  updateProgFromFases();
+}
 
 // ─── MODAL ───────────────────────────────────────────────
 function openModal(id=null){
   editingId=id;
   document.getElementById('modal-title').textContent=id?'Editar proyecto':'Nuevo proyecto';
   const foot=document.getElementById('modal-foot');
+  refreshRespDatalist();
+
   if(id){
     const p=projects.find(x=>x.id===id);
     document.getElementById('f-nombre').value=p.nombre;
     document.getElementById('f-estado').value=p.estado;
     document.getElementById('f-prio').value=p.prioridad||'';
     document.getElementById('f-equipo-m').value=p.equipo||'Mi-Books';
-    document.getElementById('f-resp').value=p.responsable;
-    document.getElementById('f-prog').value=p.avance;
     document.getElementById('f-tipo').value=p.tipo||'Proyecto';
     const fd=p.fechaFin?p.fechaFin.replace(/(\d{2})\/(\d{2})\/(\d{4})/,'$3-$1-$2'):'';
     document.getElementById('f-fecha').value=fd;
-    document.getElementById('f-subtasks').value=(p.subtasks||[]).map(s=>s.name+(s.estado!=='Sin Iniciar'?` [${s.estado}]`:'')).join(', ');
+    document.getElementById('f-prog').value=p.avance;
+    // Responsables
+    modalResponsables = p.responsable ? p.responsable.split(',').map(r=>r.trim()).filter(Boolean) : [];
+    renderRespTags();
+    document.getElementById('f-resp').value='';
+    // Fases
+    modalFases = (p.subtasks||[]).map(s=>({...s}));
+    renderFasesList();
+    // Mostrar avance manual solo si no hay fases
+    document.getElementById('fg-prog').style.display = modalFases.length ? 'none' : '';
     foot.innerHTML=`<button class="btn-danger" onclick="delProject(${id});closeModal()">Eliminar</button><div style="flex:1"></div><button class="btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveProject()">Guardar cambios</button>`;
   }else{
-    ['f-nombre','f-resp','f-subtasks','f-fecha'].forEach(fid=>document.getElementById(fid).value='');
+    document.getElementById('f-nombre').value='';
+    document.getElementById('f-fecha').value='';
     document.getElementById('f-estado').value='En progreso';
     document.getElementById('f-prio').value='Medium';
     document.getElementById('f-equipo-m').value='Mi-Books';
     document.getElementById('f-prog').value='0';
+    modalResponsables = [];
+    renderRespTags();
+    document.getElementById('f-resp').value='';
+    modalFases = [];
+    renderFasesList();
+    document.getElementById('fg-prog').style.display = '';
     foot.innerHTML=`<button class="btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn-save" onclick="saveProject()">Guardar proyecto</button>`;
   }
   document.getElementById('modal-bg').classList.add('open');
@@ -802,9 +1031,15 @@ async function saveProject(){
   const fdRaw=document.getElementById('f-fecha').value;
   let fechaFin='';
   if(fdRaw){const[y,m,d]=fdRaw.split('-');fechaFin=`${m}/${d}/${y}`;}
-  const subRaw=document.getElementById('f-subtasks').value;
-  const subtasks=subRaw?subRaw.split(',').map(s=>{s=s.trim();const m=s.match(/^(.+?)\s*\[(.+?)\]$/);return m?{name:m[1].trim(),estado:m[2].trim()}:{name:s,estado:'Sin Iniciar'};}).filter(s=>s.name):[];
-  const data={nombre,tipo:document.getElementById('f-tipo').value,estado:document.getElementById('f-estado').value,prioridad:document.getElementById('f-prio').value,equipo:document.getElementById('f-equipo-m').value,responsable:document.getElementById('f-resp').value,avance:Math.min(100,Math.max(0,parseInt(document.getElementById('f-prog').value)||0)),fechaInicio:'',fechaFin,subtasks};
+  // Agregar responsable del input si quedó algo escrito sin hacer clic en +
+  const respInput = document.getElementById('f-resp').value.trim();
+  if(respInput && !modalResponsables.includes(respInput)) modalResponsables.push(respInput);
+  const responsable = modalResponsables.join(', ');
+  const subtasks = modalFases;
+  const avance = subtasks.length
+    ? Math.round(subtasks.filter(s=>s.estado==='Terminado').length/subtasks.length*100)
+    : Math.min(100,Math.max(0,parseInt(document.getElementById('f-prog').value)||0));
+  const data={nombre,tipo:document.getElementById('f-tipo').value,estado:document.getElementById('f-estado').value,prioridad:document.getElementById('f-prio').value,equipo:document.getElementById('f-equipo-m').value,responsable,avance,fechaInicio:'',fechaFin,subtasks};
   if(editingId){const idx=projects.findIndex(p=>p.id===editingId);projects[idx]={...projects[idx],...data};if(cfg.ghtoken)pushToGH();}
   else{data.id=Date.now();projects.push(data);if(cfg.ghtoken)pushToGH();}
   persist();closeModal();render();
