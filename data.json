@@ -1,0 +1,1296 @@
+[
+  {
+    "id": 1,
+    "nombre": "Naturaleza movimiento materia y transformación",
+    "estado": "En progreso",
+    "prioridad": "Low",
+    "equipo": "Mi-Books",
+    "responsable": "Claudia Puentes, Valentina Reina",
+    "avance": 50,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Custodia de los Datos",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "Diseño de Ambientes STEM",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "Medios de Control de la Actuación Administrativa I",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "Introducción a los Negocios Internacionales",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nombre": "Gestion Integral de Ciudades y Territorios",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nombre": "Fonética y fonología anglófona",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "nombre": "Energia y materia en sistemas vivos",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "nombre": "Gestión de Calidad en Salud",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "nombre": "Control de Calidad, Atestiguamiento y Servicios Relacionados",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "nombre": "Seguridad y Salud en el Trabajo",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "nombre": "Hermeneutica juridica y tributaria",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "nombre": "Epistemología Contable",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Mi-Books",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "nombre": "Necesidades Educativas Diversas e Inclusión",
+    "estado": "En progreso",
+    "prioridad": "Low",
+    "equipo": "Mi-Books",
+    "responsable": "Angie Leiton, Valentina Reina",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "nombre": "Taller financiero BI",
+    "estado": "En progreso",
+    "prioridad": "Low",
+    "equipo": "Mi-Books",
+    "responsable": "Claudia Puentes, Diana Ruiz",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "nombre": "Didáctica y evaluación del aprendizaje",
+    "estado": "En progreso",
+    "prioridad": "Low",
+    "equipo": "Mi-Books",
+    "responsable": "Angie Leiton, Diana Ruiz",
+    "avance": 25,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Diseño",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Edición y C. E.",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "nombre": "Simulador Análisis de Riesgos",
+    "estado": "En progreso",
+    "prioridad": "Low",
+    "equipo": "Diseño, Johnas",
+    "responsable": "John Rodríguez, Nancy Vargas",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": []
+  },
+  {
+    "id": 18,
+    "nombre": "Juego - Matemáticas Financieras (1)",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Diseño",
+    "responsable": "Nancy Vargas",
+    "avance": 75,
+    "fechaInicio": "",
+    "fechaFin": "02/11/2026",
+    "tipo": "Proyecto",
+    "subtasks": []
+  },
+  {
+    "id": 19,
+    "nombre": "360° - Desarrollo Sostenible",
+    "estado": "Pausado",
+    "prioridad": "Medium",
+    "equipo": "Diseño",
+    "responsable": "Leonardo Stiglich",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "03/20/2026",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Actividad 3",
+        "estado": "Pausado"
+      },
+      {
+        "name": "Actividad 4",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Actividad 6",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Actividad 7",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Ajuste Recorrido",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "nombre": "CDA21 - Autocuidado",
+    "estado": "Terminado",
+    "prioridad": "Medium",
+    "equipo": "CREA, Freelance",
+    "responsable": "Valentina Reina",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "02/11/2026",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "nombre": "CDA03 - Bibliometría",
+    "estado": "Terminado",
+    "prioridad": "Medium",
+    "equipo": "CREA, Freelance",
+    "responsable": "Nancy Vargas",
+    "avance": 100,
+    "fechaInicio": "02/11/2026",
+    "fechaFin": "02/11/2026",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "nombre": "Cuadro Integral de Mando - Tutorial",
+    "estado": "Terminado",
+    "prioridad": "",
+    "equipo": "Diseño",
+    "responsable": "Nancy Vargas",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "02/18/2026",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "nombre": "Aplicativo creación de plantillas para Módulos",
+    "estado": "Terminado",
+    "prioridad": "High",
+    "equipo": "Diseño",
+    "responsable": "Leonardo Stiglich",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "02/18/2026",
+    "tipo": "Proyecto",
+    "subtasks": []
+  },
+  {
+    "id": 24,
+    "nombre": "LEAI - ECPA Digital",
+    "estado": "Terminado",
+    "prioridad": "Low",
+    "equipo": "Diseño",
+    "responsable": "Nancy Vargas",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": []
+  },
+  {
+    "id": 25,
+    "nombre": "CDA -MOOC - Pensamiento Computacional",
+    "estado": "Terminado",
+    "prioridad": "Low",
+    "equipo": "CREA, Freelance",
+    "responsable": "Angie Leiton, Mónica Cely",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "nombre": "Laboratorio de  juego infantil",
+    "estado": "Pausado",
+    "prioridad": "Medium",
+    "equipo": "Diseño",
+    "responsable": "Leonardo Stiglich",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": []
+  },
+  {
+    "id": 27,
+    "nombre": "LEAI - Desarrollo Socioemocional",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "Johnas",
+    "responsable": "John Rodríguez",
+    "avance": 50,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Runión Inicial",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Diseño Pedagógico",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "nombre": "MOOC - Metodologías experimentales en la investigación-creación",
+    "estado": "Sin Iniciar",
+    "prioridad": "",
+    "equipo": "Freelance",
+    "responsable": "",
+    "avance": 25,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "nombre": "Monopolio - Desafio Financiero",
+    "estado": "En correcciones",
+    "prioridad": "Medium",
+    "equipo": "Diseño",
+    "responsable": "Jennyfer Peña",
+    "avance": 25,
+    "fechaInicio": "02/17/2026",
+    "fechaFin": "03/04/2026",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "En correcciones",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Sin Iniciar"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "nombre": "CDA18- Inglés",
+    "estado": "Terminado",
+    "prioridad": "",
+    "equipo": "CREA, Freelance",
+    "responsable": "John Rodríguez",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "02/04/2026",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "nombre": "Psicología Educativa - Tutorial",
+    "estado": "Terminado",
+    "prioridad": "",
+    "equipo": "Diseño",
+    "responsable": "Nancy Vargas",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "02/18/2026",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "nombre": "Simulador Riesgo Ergonómico o Biomecánico - Guía Metodológica",
+    "estado": "Terminado",
+    "prioridad": "",
+    "equipo": "Diseño",
+    "responsable": "Nancy Vargas",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "02/18/2026",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "nombre": "Cuentos para Seguritos 3",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "Johnas",
+    "responsable": "John Rodríguez",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Edición",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Grabación de Audios John",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Grabación otras voces",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Publicación",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Links SoundCLoud",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "nombre": "Desafío Financiero 360° - Juego",
+    "estado": "Terminado",
+    "prioridad": "",
+    "equipo": "CREA",
+    "responsable": "Nancy Vargas",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "nombre": "360° - Alcaldía Municipal",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "Diseño, Johnas",
+    "responsable": "John Rodríguez, Leonardo Stiglich",
+    "avance": 12,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Reunión Inicial",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Planeación",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Levantamiento de Material",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Edición",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Inicial",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Ajustes",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Final",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Publicación",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "nombre": "LEAI - Bitácoras Digitales",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "Diseño, Johnas",
+    "responsable": "John Rodríguez",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": []
+  },
+  {
+    "id": 37,
+    "nombre": "Energía Vital",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "CREA, Diseño, Johnas",
+    "responsable": "John Rodríguez",
+    "avance": 12,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Reunión Inicial",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Planeación",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Construcción de guión",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Edición",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Inicial",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Ajustes",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Final",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Publicación",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "nombre": "Juego - Simplex",
+    "estado": "Pausado",
+    "prioridad": "",
+    "equipo": "CREA",
+    "responsable": "Jennyfer Peña",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": []
+  },
+  {
+    "id": 39,
+    "nombre": "Estilos de Pensamiento",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "CREA, Diseño, Johnas",
+    "responsable": "John Rodríguez",
+    "avance": 12,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Reunión Inicial",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Planeación",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Construcción de guión",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Edición",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Inicial",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Ajustes",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Final",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Publicación",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "nombre": "CDA - Frances",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "CREA",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Reunión Inicial",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "Planeación",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Construcción de guión",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Edición",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Inicial",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Ajustes",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Final",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Publicación",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "nombre": "LEAI - Odisea de los 4 Reinos",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "CREA, Diseño, Johnas",
+    "responsable": "John Rodríguez",
+    "avance": 12,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": [
+      {
+        "name": "Reunión Inicial",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Planeación",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Construcción de guión",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Edición",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Inicial",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Ajustes",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Entrega Final",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Publicación",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "nombre": "CDA19 - Empleabilidad",
+    "estado": "Terminado",
+    "prioridad": "Medium",
+    "equipo": "CREA, Freelance",
+    "responsable": "Mónica Cely",
+    "avance": 100,
+    "fechaInicio": "",
+    "fechaFin": "03/02/2026",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Publicado",
+        "estado": "Terminado"
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "nombre": "Design Thinking - Tutorial /video",
+    "estado": "En progreso",
+    "prioridad": "",
+    "equipo": "Diseño",
+    "responsable": "Nancy Vargas",
+    "avance": 25,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Publicado",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "nombre": "Psicología Comunitaria - Tutorial /video",
+    "estado": "Terminado",
+    "prioridad": "",
+    "equipo": "Diseño",
+    "responsable": "Nancy Vargas",
+    "avance": 25,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Otros",
+    "subtasks": [
+      {
+        "name": "Enviado a Revisión",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Asignado",
+        "estado": "Terminado"
+      },
+      {
+        "name": "Entregado",
+        "estado": "En progreso"
+      },
+      {
+        "name": "Publicado",
+        "estado": "En progreso"
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "nombre": "Entrega de guías y elementos",
+    "estado": "Terminado",
+    "prioridad": "",
+    "equipo": "",
+    "responsable": "",
+    "avance": 0,
+    "fechaInicio": "",
+    "fechaFin": "",
+    "tipo": "Proyecto",
+    "subtasks": []
+  }
+]
