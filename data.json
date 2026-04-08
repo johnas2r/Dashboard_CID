@@ -1305,11 +1305,15 @@
     "fechaFin": "",
     "subtasks": [
       {
-        "name": "diseño",
+        "name": "[Estado]",
         "estado": "Sin Iniciar"
       },
       {
-        "name": "edición",
+        "name": "[Estado2",
+        "estado": "Sin Iniciar"
+      },
+      {
+        "name": "[Estado3]",
         "estado": "Sin Iniciar"
       }
     ],
